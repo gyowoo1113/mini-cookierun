@@ -1,7 +1,6 @@
 from pico2d import *
 from gobj import *
 import gfw
-import title_state
 
 # 01 - 180,200  02 - 170,224  03-190,256
 
@@ -24,7 +23,7 @@ def handle_event(e):
     if e.type == SDL_QUIT:
         gfw.quit()
     elif (e.type, e.key) == (SDL_KEYDOWN, SDLK_ESCAPE):
-        gfw.change(title_state)
+        gfw.pop()
 
 def exit():
     pass

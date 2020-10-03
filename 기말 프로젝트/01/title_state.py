@@ -10,7 +10,7 @@ def update():
     pass
 
 def draw():
-    image.draw(800, 300)
+    image.draw(400,200,800,400)
 
 def handle_event(e):
     if e.type == SDL_QUIT:
@@ -18,11 +18,17 @@ def handle_event(e):
     elif (e.type, e.key) == (SDL_KEYDOWN, SDLK_ESCAPE):
         gfw.quit()
     elif (e.type, e.key) == (SDL_KEYDOWN, SDLK_SPACE):
-        gfw.change(game_state)
+        gfw.push(game_state)
 
 def exit():
     global image
     del image
+
+def pause():
+    pass
+
+def resume():
+    pass
 
 if __name__ == '__main__':
     gfw.run_main()
