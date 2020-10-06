@@ -1,16 +1,15 @@
 from pico2d import *
 
 class Cookie:
-    def __init__(self,pos,fidxNum,y):
-        self.w , self.h = pos
-        self.fidxNum = fidxNum
-        self.y = y
+    def __init__(self,h):
+        self.h = h
+        self.y = 150
         self.fidx = 0
     def draw(self):
-        self.image.clip_draw(self.fidx*self.w,0,self.w,self.h,100,self.y)
+        self.image.clip_draw(self.fidx*100,0,100,self.h,150,self.y)
     def update(self):
         self.y += 0
-        self.fidx = (self.fidx+1) % self.fidxNum
+        self.fidx = (self.fidx+1) % 4
 # Cookie 객체의 x값은 고정되어 있음
 
 class Jelly:

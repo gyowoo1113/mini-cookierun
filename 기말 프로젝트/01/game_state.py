@@ -2,11 +2,11 @@ from pico2d import *
 from gobj import *
 import gfw
 
-# 01 - 180,200  02 - 170,224  03-190,256
+# 01 - 111  02,03 - 135
 
 def enter():
     global cookie,jellys
-    cookie = Cookie((180, 200), 4, 180)
+    cookie = Cookie(111)
     cookie.image = load_image('../res/cookie/cookie01_run.png')
     #jellys = [ ]
 
