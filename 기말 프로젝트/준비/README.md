@@ -11,9 +11,9 @@
    >    * **체력이 0이 될 경우 게임은 종료**된다.
    >    * 종료 시 결과 화면이 나오며, 본인의 총 점수가 나온다.
    > * 스크린샷  
-   > ![screensh](../res/markdown_01.jpg)  
-   > ![screensh](../res/markdown_02.jpg)  
-   > ![screensh](../res/markdown_03.jpg)  
+   > ![screensh](../res/mk/markdown_01.jpg)  
+   > ![screensh](../res/mk/markdown_02.jpg)  
+   > ![screensh](../res/mk/markdown_03.jpg)  
  * 게임의 목적 및 방법
     * **목적**
         * 두 가지의 경우를 고려하고 있음
@@ -181,9 +181,9 @@
  └ 보물 선택화면  
  └ 쿠키 선택화면
 * 이미지 예시
- > ![screensh](../res/markdown_05.jpg)  
- > ![screensh](../res/markdown_06.jpg)  
- > ![screensh](../res/markdown_07.jpg)  
+ > ![screensh](../res/mk/markdown_05.jpg)  
+ > ![screensh](../res/mk/markdown_06.jpg)  
+ > ![screensh](../res/mk/markdown_07.jpg)  
  
 # 4. 필요한 기술
 * 장애물 충돌체크
@@ -193,6 +193,6 @@
 * 시간 측정
 
 # 5. 개발 일정
-   > ![screensh](../res/markdown_04.jpg)  
+   > ![screensh](../res/mk/markdown_04.jpg)  
  
     
