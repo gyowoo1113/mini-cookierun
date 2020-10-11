@@ -1,10 +1,10 @@
 import gfw
 from pico2d import *
-import ready_state
+import game_state
 
 def enter():
     global image
-    image = load_image('../res/map_bg/title.png')
+    image = load_image('../res/map_bg/ready_bg.png')
 
 def update():
     pass
@@ -16,9 +16,9 @@ def handle_event(e):
     if e.type == SDL_QUIT:
         gfw.quit()
     elif (e.type, e.key) == (SDL_KEYDOWN, SDLK_ESCAPE):
-        gfw.quit()
+        gfw.pop()
     elif (e.type, e.key) == (SDL_KEYDOWN, SDLK_SPACE):
-        gfw.push(ready_state)
+        gfw.push(game_state)
 
 def exit():
     global image
