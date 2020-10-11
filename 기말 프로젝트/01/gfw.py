@@ -15,7 +15,7 @@ def run(start_state):
     running = True
     stack = [start_state]
 
-    open_canvas(800,400)
+    open_canvas(1075,400)
     start_state.enter()
 
     global delta_time
