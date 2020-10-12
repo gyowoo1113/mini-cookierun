@@ -10,7 +10,7 @@ def update():
     pass
 
 def draw():
-    image.draw(537.5,200,1075,400)
+    image.draw(400,200,800,400)
 
 def handle_event(e):
     if e.type == SDL_QUIT:

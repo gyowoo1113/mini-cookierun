@@ -5,6 +5,7 @@ running = True
 stack = None
 frame_interval = 0.05
 delta_time = 0
+W,H = (800,400)
 
 def quit():
     global running
@@ -15,7 +16,7 @@ def run(start_state):
     running = True
     stack = [start_state]
 
-    open_canvas(1075,400)
+    open_canvas(W,H)
     start_state.enter()
 
     global delta_time
