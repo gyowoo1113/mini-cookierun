@@ -12,39 +12,40 @@ class Cookie:
         self.fidx = 0
         self.sizx,self.sizy = [100,h]
         self.jump = False
-        self.ReadyJP = False
-        self.cnt=0
+        self.time=0
     def draw(self):
-        if(self.jump):
+        if self.jump:
             self.image2.clip_draw(self.fidx*100,0,100,self.h,125,self.y,self.sizx,self.sizy)
         else:
             self.image.clip_draw(self.fidx*100,0,100,self.h,150,self.y,self.sizx,self.sizy)
     def update(self):
+        self.time += gfw.delta_time
         if self.jump:
-            if self.ReadyJP:
+            frame = self.time * 5
+            if frame < 2:
                 self.fidx = 0
-                if self.cnt == 3:
-                    self.ReadyJP = False
-            else:
+            elif frame < 6:
                 self.fidx = 1
-
-            self.cnt += 1
-            if self.cnt == 12:
+            elif frame < 7:
+                self.fidx = 0
+            else:
+                self.time = 0
                 self.jump = False
         else:
-            self.fidx = (self.fidx+1) % 4
+            frame = self.time * 15
+            self.fidx = int(frame) % 4
+
     def Jump(self):
-        self.ReadyJP = True
+        self.time = 0
         self.jump = True
-        self.cnt=0
-    def down(self):
+    def Down(self):
         pass
     def handle_event(self, e):
         pair = (e.type, e.key)
         if pair == Cookie.KEYDOWN_SPACE:
             self.Jump()
         elif pair == Cookie.KEYDOWN_DOWN:
-            self.down()
+            self.Down()
 #sep 25
 
 class Back:
