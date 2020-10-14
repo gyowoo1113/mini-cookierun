@@ -1,4 +1,5 @@
 from pico2d import *
+import gfw
 
 
 class Cookie:
@@ -10,18 +11,38 @@ class Cookie:
         self.y = 100
         self.fidx = 0
         self.sizx,self.sizy = [100,h]
+        self.jump = False
+        self.ReadyJP = False
+        self.cnt=0
     def draw(self):
-        self.image.clip_draw(self.fidx*100,0,100,self.h,150,self.y,self.sizx,self.sizy)
+        if(self.jump):
+            self.image2.clip_draw(self.fidx*100,0,100,self.h,125,self.y,self.sizx,self.sizy)
+        else:
+            self.image.clip_draw(self.fidx*100,0,100,self.h,150,self.y,self.sizx,self.sizy)
     def update(self):
-        self.fidx = (self.fidx+1) % 4
-    def jump(self):
-        pass
+        if self.jump:
+            if self.ReadyJP:
+                self.fidx = 0
+                if self.cnt == 3:
+                    self.ReadyJP = False
+            else:
+                self.fidx = 1
+
+            self.cnt += 1
+            if self.cnt == 12:
+                self.jump = False
+        else:
+            self.fidx = (self.fidx+1) % 4
+    def Jump(self):
+        self.ReadyJP = True
+        self.jump = True
+        self.cnt=0
     def down(self):
         pass
     def handle_event(self, e):
         pair = (e.type, e.key)
         if pair == Cookie.KEYDOWN_SPACE:
-            self.jump()
+            self.Jump()
         elif pair == Cookie.KEYDOWN_DOWN:
             self.down()
 #sep 25
