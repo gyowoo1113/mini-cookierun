@@ -22,9 +22,7 @@ class Cookie:
         self.time += gfw.delta_time
         if self.jump:
             frame = self.time * 5
-            if frame < 2:
-                self.fidx = 0
-            elif frame < 6:
+            if frame < 6:
                 self.fidx = 1
             elif frame < 7:
                 self.fidx = 0
