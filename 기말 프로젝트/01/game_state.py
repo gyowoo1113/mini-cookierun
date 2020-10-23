@@ -9,8 +9,8 @@ import gfw
 def enter():
     global cookie,jellys,back1,back2,bottom
     cookie = Cookie(135)
-    cookie.image = load_image('../res/cookie/cookie03_run.png')
-    cookie.image2 = load_image('../res/cookie/cookie03_jump.png')
+    cookie.image = load_image('../res/cookie/example/cookie03_run.png')
+    cookie.image2 = load_image('../res/cookie/example/cookie03_jump.png')
     back1 = Back(1)
     back2 = Back(2)
     back1.image = load_image('../res/map_bg/back_layer01.png')

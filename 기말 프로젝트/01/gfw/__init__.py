@@ -1,22 +1,30 @@
-from pico2d import *
 import time
+from pico2d import *
+import random
+import gfw.world
+import gfw.image
+#import gfw.font
 
 running = True
 stack = None
-frame_interval = 0.05
+frame_interval = 0.01
 delta_time = 0
-W,H = (800,400)
 
 def quit():
     global running
     running = False
 
 def run(start_state):
-    global running,stack
+    global running, stack
     running = True
     stack = [start_state]
 
-    open_canvas(W,H)
+    w,h = 800,600
+    if hasattr(start_state, 'canvas_width'): w = start_state.canvas_width
+    if hasattr(start_state, 'canvas_height'): h = start_state.canvas_height
+
+    open_canvas(w=w, h=h)
+
     start_state.enter()
 
     global delta_time
@@ -27,20 +35,19 @@ def run(start_state):
         delta_time = now - last_time
         last_time = now
 
-        #event handling
+        # event handling
         evts = get_events()
         for e in evts:
             stack[-1].handle_event(e)
 
-        #update
+        # game logic
         stack[-1].update()
 
-        #game rendering
+        # game rendering
         clear_canvas()
         stack[-1].draw()
         update_canvas()
-#     for jelly in jellys:
-#           jelly.draw()
+
         delay(frame_interval)
 
     while (len(stack) > 0):
@@ -55,7 +62,6 @@ def change(state):
         stack.pop().exit()
     stack.append(state)
     state.enter()
-
 
 def push(state):
     global stack
@@ -77,7 +83,6 @@ def pop():
 
         # execute resume function of the previous state
         stack[-1].resume()
-
 
 def run_main():
     import sys
