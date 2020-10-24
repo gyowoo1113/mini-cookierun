@@ -13,10 +13,12 @@ class Background:
         hw, hh = self.cw // 2, self.    ch // 2
         self.boundary = hw, hh, self.image.w - hw, self.image.h - hh
     def set_target(self, target):
+        self.target = target
         self.update()
     def draw(self):
         self.image.clip_draw_to_origin(*self.win_rect, 0, 0)
     def update(self):
+        if self.target is None:
             return
         tx, ty = self.target.pos
         sl = round(tx - self.cw / 2)

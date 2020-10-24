@@ -30,7 +30,7 @@ def update():
 
 def draw():
     gfw.world.draw()
-    #draw_collision_box()
+    draw_collision_box()
 
 def handle_event(e):
     # prev_dx = boy.dx
@@ -42,7 +42,7 @@ def handle_event(e):
             gfw.pop()
             return
 
-#    if player.handle_event(e):
+    if player.handle_event(e):
         return
 
 def exit():
