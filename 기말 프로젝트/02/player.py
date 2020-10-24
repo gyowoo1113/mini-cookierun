@@ -8,12 +8,13 @@ PLAYER_SIZE = 270
 class Player:
     RUNNING, FALLING, JUMPING, DOUBLE_JUMP, SLIDING = range(5)
     SLIDE_DURATION = 1.0
-
+    Name = ['cocoa','yogurt']
     ACTIONS = ['dead', 'doublejump', 'jump', 'slide','run']
+    UNDER = [25,55]
     GRAVITY = 3000
     JUMP = 1000
     images = {}
-    FPS = 12
+    FPS = 10
     def __init__(self):
         if len(Player.images) == 0:
             Player.load_all_images()
@@ -27,7 +28,9 @@ class Player:
         self.delta = 0, 0
 
         self.mag = 1
+        self.mag_speed = 0
         self.state = Player.RUNNING
+        self.cookie_time = 0
 
     @staticmethod
     def load_all_images():
@@ -59,10 +62,39 @@ class Player:
         return images
 
     def update(self):
+
+        self.update_mag()
+        self.cookie_time += gfw.delta_time
         self.time += gfw.delta_time
-        self.fidx = round(self.time * Player.FPS)
+        if self.state in [Player.JUMPING, Player.DOUBLE_JUMP, Player.FALLING]:
+            # print('jump speed:', self.jump_speed)
+            self.move((0, self.jump_speed * gfw.delta_time))
+            self.jump_speed -= Player.GRAVITY * self.mag * gfw.delta_time
+
+    def update_mag(self):
+        if self.mag_speed == 0: return
+
+        x,y = self.pos
+        _,b,_,_ = self.get_bb()
+        diff = y - b
+        prev_mag = self.mag
+
+        self.mag += self.mag_speed * gfw.delta_time
+        if self.mag > 2.0:
+            self.mag = 2.0
+            self.mag_speed = 0
+        elif self.mag < 1.0:
+            self.mag = 1.0
+            self.mag_speed = 0
+
+        new_y = b + diff * self.mag / prev_mag
+        self.pos = x,new_y
+
+    def move(self, diff):
+        self.pos = gobj.point_add(self.pos, diff)
 
     def draw(self):
+        self.fidx = round(self.time * Player.FPS)
         images = self.images[self.action]
         image = images[self.fidx % len(images)]
         self.w, self.h = image.w,image.h
@@ -78,6 +110,12 @@ class Player:
         self.state = Player.SLIDING
         self.action = 'slide'
         self.time = 0.0
+        x,y = self.pos
+
+        for i in range(2):
+            if self.char == Player.Name[i]:
+                y -= Player.UNDER[i]
+        self.pos = x,y
 
     def jump(self):
         if self.action in [Player.FALLING, Player.DOUBLE_JUMP, Player.SLIDING]:
@@ -96,6 +134,21 @@ class Player:
                 self.jump()
             elif e.key == SDLK_DOWN:
                 self.slide()
+        if e.type == SDL_KEYUP:
+            if e.key == SDLK_DOWN:
+                if self.state == Player.SLIDING:
+                    self.cancle()
+
+    def cancle(self):
+         if self.state == Player.SLIDING:
+             self.state = Player.RUNNING
+             self.action = 'run'
+
+             x,y = self.pos
+             for i in range(2):
+                 if self.char == Player.Name[i]:
+                     y += Player.UNDER[i]
+             self.pos = x,y
 
     def get_bb(self):
         x,y = self.pos
