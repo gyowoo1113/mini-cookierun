@@ -8,9 +8,7 @@ PLAYER_SIZE = 270
 class Player:
     RUNNING, FALLING, JUMPING, DOUBLE_JUMP, SLIDING = range(5)
     SLIDE_DURATION = 1.0
-    Name = ['cocoa','yogurt']
     ACTIONS = ['dead', 'doublejump', 'jump', 'slide','run']
-    UNDER = [25,55]
     GRAVITY = 3000
     JUMP = 1000
     images = {}
@@ -19,7 +17,7 @@ class Player:
         if len(Player.images) == 0:
             Player.load_all_images()
 
-        self.pos = 150, get_canvas_height() // 2
+        self.pos = 150, get_canvas_height() // 2- 150
         self.fidx = 0
         self.time = 0
         self.char = random.choice(['cocoa','yogurt'])
@@ -100,9 +98,11 @@ class Player:
         self.w, self.h = image.w,image.h
 
         size = PLAYER_SIZE * self.mag, PLAYER_SIZE * self.mag
-#        x,y = 0,0
         flip = 'h' if self.delta[0] < 0 else ''
-        image.draw(*self.pos, image.w, image.h)
+        image.draw_to_origin(*self.pos,self.w, self.h)
+
+#        image.draw(*self.pos, image.w, image.h)
+#        x,y = 0,0
 #        image.clip_draw(x, y, PLAYER_SIZE, PLAYER_SIZE, *self.pos, *size)
 
     def slide(self):
@@ -110,12 +110,6 @@ class Player:
         self.state = Player.SLIDING
         self.action = 'slide'
         self.time = 0.0
-        x,y = self.pos
-
-        for i in range(2):
-            if self.char == Player.Name[i]:
-                y -= Player.UNDER[i]
-        self.pos = x,y
 
     def jump(self):
         if self.action in [Player.FALLING, Player.DOUBLE_JUMP, Player.SLIDING]:
@@ -144,13 +138,7 @@ class Player:
              self.state = Player.RUNNING
              self.action = 'run'
 
-             x,y = self.pos
-             for i in range(2):
-                 if self.char == Player.Name[i]:
-                     y += Player.UNDER[i]
-             self.pos = x,y
-
     def get_bb(self):
         x,y = self.pos
-        return x - self.w//2, y - self.h//2, x + self.w//2, y + self.h//2
+        return x, y, x + self.w, y + self.h
 
