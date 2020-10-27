@@ -8,7 +8,7 @@ PLAYER_SIZE = 270
 class Player:
     RUNNING, FALLING, JUMPING, DOUBLE_JUMP, SLIDING = range(5)
     SLIDE_DURATION = 1.0
-    ACTIONS = ['dead', 'doublejump', 'jump', 'slide','run']
+    ACTIONS = ['dead', 'doublejump', 'jump', 'slide','run','falling']
     GRAVITY = 3000
     JUMP = 1000
     images = {}
@@ -29,6 +29,8 @@ class Player:
         self.mag_speed = 0
         self.state = Player.RUNNING
         self.cookie_time = 0
+
+        self.w,self.h = 0,0
 
     @staticmethod
     def load_all_images():
@@ -60,7 +62,6 @@ class Player:
         return images
 
     def update(self):
-
         self.update_mag()
         self.cookie_time += gfw.delta_time
         self.time += gfw.delta_time
@@ -69,41 +70,39 @@ class Player:
             self.move((0, self.jump_speed * gfw.delta_time))
             self.jump_speed -= Player.GRAVITY * self.mag * gfw.delta_time
 
-    def update_mag(self):
-        if self.mag_speed == 0: return
-
-        x,y = self.pos
-        _,b,_,_ = self.get_bb()
-        diff = y - b
-        prev_mag = self.mag
-
-        self.mag += self.mag_speed * gfw.delta_time
-        if self.mag > 2.0:
-            self.mag = 2.0
-            self.mag_speed = 0
-        elif self.mag < 1.0:
-            self.mag = 1.0
-            self.mag_speed = 0
-
-        new_y = b + diff * self.mag / prev_mag
-        self.pos = x,new_y
-
-    def move(self, diff):
-        self.pos = gobj.point_add(self.pos, diff)
+        _,foot,_,_ = self.get_bb()
+        if foot < 0:
+            self.move((0, get_canvas_height()))
+        platform = self.get_platform(foot)
+        if platform is not None:
+            l,b,r,t = platform.get_bb()
+            if self.state in [Player.RUNNING, Player.SLIDING]:
+                if foot > t:
+                    self.state = Player.FALLING
+                    self.action = 'falling'
+                    self.jump_speed = 0
+            else:
+                # print('falling', t, foot)
+                if self.jump_speed < 0 and int(foot) <= t:
+                    self.move((0, t - foot))
+                    self.state = Player.RUNNING
+                    self.action = 'run'
+                    self.jump_speed = 0
+                    # print('Now running', t, foot)
 
     def draw(self):
         self.fidx = round(self.time * Player.FPS)
         images = self.images[self.action]
         image = images[self.fidx % len(images)]
+
+#        if self.fidx > 5:
+#            if int(self.fidx+1)%len(images) == 1 and self.state == Player.DOUBLE_JUMP:
+#                self.state = Player.FALLING
+#                self.action = 'falling'
         self.w, self.h = image.w,image.h
 
-        size = PLAYER_SIZE * self.mag, PLAYER_SIZE * self.mag
-        flip = 'h' if self.delta[0] < 0 else ''
+#        size = PLAYER_SIZE * self.mag, PLAYER_SIZE * self.mag
         image.draw_to_origin(*self.pos,self.w, self.h)
-
-#        image.draw(*self.pos, image.w, image.h)
-#        x,y = 0,0
-#        image.clip_draw(x, y, PLAYER_SIZE, PLAYER_SIZE, *self.pos, *size)
 
     def slide(self):
         if self.state != Player.RUNNING: return
@@ -112,7 +111,7 @@ class Player:
         self.time = 0.0
 
     def jump(self):
-        if self.action in [Player.FALLING, Player.DOUBLE_JUMP, Player.SLIDING]:
+        if self.state in [Player.FALLING, Player.DOUBLE_JUMP, Player.SLIDING]:
             return
         if self.state == Player.RUNNING:
             self.state = Player.JUMPING
@@ -141,4 +140,46 @@ class Player:
     def get_bb(self):
         x,y = self.pos
         return x, y, x + self.w, y + self.h
+
+    def get_platform(self, foot):
+        selected = None
+        sel_top = 0
+        x,y = self.pos
+        for platform in gfw.world.objects_at(gfw.layer.platform):
+            l,b,r,t = platform.get_bb()
+            if x < l or x > r: continue
+            mid = (b + t) // 2
+            if foot < mid: continue
+            if selected is None:
+                selected = platform
+                sel_top = t
+            else:
+                if t > sel_top:
+                    selected = platform
+                    sel_top = t
+        # if selected is not None:
+        #     print(l,b,r,t, selected)
+        return selected
+
+    def update_mag(self):
+        if self.mag_speed == 0: return
+
+        x,y = self.pos
+        _,b,_,_ = self.get_bb()
+        diff = y - b
+        prev_mag = self.mag
+
+        self.mag += self.mag_speed * gfw.delta_time
+        if self.mag > 2.0:
+            self.mag = 2.0
+            self.mag_speed = 0
+        elif self.mag < 1.0:
+            self.mag = 1.0
+            self.mag_speed = 0
+
+        new_y = b + diff * self.mag / prev_mag
+        self.pos = x,new_y
+
+    def move(self, diff):
+        self.pos = gobj.point_add(self.pos, diff)
 
