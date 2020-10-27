@@ -6,13 +6,13 @@ import random
 PLAYER_SIZE = 270
 
 class Player:
-    RUNNING, FALLING, JUMPING, DOUBLE_JUMP, SLIDING = range(5)
     SLIDE_DURATION = 1.0
     ACTIONS = ['dead', 'doublejump', 'jump', 'slide','run','falling']
     GRAVITY = 3000
     JUMP = 1000
     images = {}
     FPS = 10
+    FIDX = 0
     def __init__(self):
         if len(Player.images) == 0:
             Player.load_all_images()
@@ -27,10 +27,10 @@ class Player:
 
         self.mag = 1
         self.mag_speed = 0
-        self.state = Player.RUNNING
         self.cookie_time = 0
 
         self.w,self.h = 0,0
+        self.cnt = 0
 
     @staticmethod
     def load_all_images():
@@ -65,7 +65,7 @@ class Player:
         self.update_mag()
         self.cookie_time += gfw.delta_time
         self.time += gfw.delta_time
-        if self.state in [Player.JUMPING, Player.DOUBLE_JUMP, Player.FALLING]:
+        if self.action in ['jump','doublejump', 'falling']:
             # print('jump speed:', self.jump_speed)
             self.move((0, self.jump_speed * gfw.delta_time))
             self.jump_speed -= Player.GRAVITY * self.mag * gfw.delta_time
@@ -76,16 +76,14 @@ class Player:
         platform = self.get_platform(foot)
         if platform is not None:
             l,b,r,t = platform.get_bb()
-            if self.state in [Player.RUNNING, Player.SLIDING]:
+            if self.action in ['run', 'slide']:
                 if foot > t:
-                    self.state = Player.FALLING
                     self.action = 'falling'
                     self.jump_speed = 0
             else:
                 # print('falling', t, foot)
                 if self.jump_speed < 0 and int(foot) <= t:
                     self.move((0, t - foot))
-                    self.state = Player.RUNNING
                     self.action = 'run'
                     self.jump_speed = 0
                     # print('Now running', t, foot)
@@ -94,32 +92,35 @@ class Player:
         self.fidx = round(self.time * Player.FPS)
         images = self.images[self.action]
         image = images[self.fidx % len(images)]
-
-#        if self.fidx > 5:
-#            if int(self.fidx+1)%len(images) == 1 and self.state == Player.DOUBLE_JUMP:
-#                self.state = Player.FALLING
-#                self.action = 'falling'
         self.w, self.h = image.w,image.h
+
+        self.change(len(images))
 
 #        size = PLAYER_SIZE * self.mag, PLAYER_SIZE * self.mag
         image.draw_to_origin(*self.pos,self.w, self.h)
 
     def slide(self):
-        if self.state != Player.RUNNING: return
-        self.state = Player.SLIDING
+        if self.action != 'run': return
         self.action = 'slide'
         self.time = 0.0
 
     def jump(self):
-        if self.state in [Player.FALLING, Player.DOUBLE_JUMP, Player.SLIDING]:
+        if self.action in ['falling','doublejump', 'slide']:
             return
-        if self.state == Player.RUNNING:
-            self.state = Player.JUMPING
+        if self.action == 'run':
             self.action ='jump'
-        elif self.state == Player.JUMPING:
-            self.state = Player.DOUBLE_JUMP
+        elif self.action == 'jump':
             self.action = 'doublejump'
+            self.cnt = self.fidx
         self.jump_speed = Player.JUMP * self.mag
+
+    def change(self,img_len):
+        Player.FIDX = self.fidx - self.cnt
+        if self.action == 'doublejump':
+            if Player.FIDX == img_len:
+                self.action = 'falling'
+        #if self.action == 'stand':
+        #        self.action = 'run'
 
     def handle_event(self, e):
         if e.type == SDL_KEYDOWN:
@@ -129,12 +130,11 @@ class Player:
                 self.slide()
         if e.type == SDL_KEYUP:
             if e.key == SDLK_DOWN:
-                if self.state == Player.SLIDING:
+                if self.action == 'slide':
                     self.cancle()
 
     def cancle(self):
-         if self.state == Player.SLIDING:
-             self.state = Player.RUNNING
+         if self.action == 'slide':
              self.action = 'run'
 
     def get_bb(self):
