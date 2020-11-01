@@ -6,6 +6,7 @@ from player import Player
 from background import HorzScrollBackground
 from platform import Platform
 from jelly import Jelly
+from check import *
 
 canvas_width= 1120
 canvas_height = 630
@@ -13,6 +14,7 @@ canvas_height = 630
 def enter():
     gfw.world.init(['bg','enemy','platform','item','player'])
     Player.load_all_images()
+    Jelly.load_all_images()
 
     center = get_canvas_width() // 2, get_canvas_height() // 2
 
@@ -25,6 +27,9 @@ def enter():
     player = Player()
 #    player.bg = bg
     gfw.world.add(gfw.layer.player, player)
+
+    global font
+    font = load_font(gobj.RES_DIR + 'font/CookieRun Regular.ttf', 40)
 
 
 
@@ -45,20 +50,26 @@ def move_platform():
                 r = obj.right
                 if x < r: x = r
 
+    check_items(player)
+
     cw = 2 * get_canvas_width()
     while x < cw:
         t = Platform.T_6x7
         pf = Platform(t, x, 0)
         gfw.world.add(gfw.layer.platform, pf)
 
-        jelly = Jelly(Jelly.TYPE_1, x + pf.width // 2, random.randint(200, 500))
+        # 임시로 랜덤선택 해놓음
+        type = random.choice(['jelly','magnet','biggest'])
+
+        jelly = Jelly(type, x + pf.width // 2, random.randint(200, 500))
         gfw.world.add(gfw.layer.item, jelly)
         # print('adding platform:', gfw.world.count_at(gfw.layer.platform))
         x += pf.width
 
 def draw():
     gfw.world.draw()
-    draw_collision_box()
+    #draw_collision_box()
+    font.draw(canvas_width/2, canvas_height - 45, '%d' % player.score)
 
 def handle_event(e):
     # prev_dx = boy.dx

@@ -6,6 +6,7 @@ import random
 PLAYER_SIZE = 270
 
 class Player:
+    BIG, = range(1)
     SLIDE_DURATION = 1.0
     ACTIONS = ['dead', 'doublejump', 'jump', 'slide','run','falling']
     GRAVITY = 3000
@@ -31,6 +32,9 @@ class Player:
 
         self.w,self.h = 0,0
         self.cnt = 0
+
+        self.score = 0
+        #self.check = -1
 
     @staticmethod
     def load_all_images():
