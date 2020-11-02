@@ -59,7 +59,7 @@ def move_platform():
         gfw.world.add(gfw.layer.platform, pf)
 
         # 임시로 랜덤선택 해놓음
-        type = random.choice(['jelly','biggest'])
+        type = random.choice(['jelly','jelly','jelly','jelly','magnet'])
 
         jelly = Jelly(type, x + pf.width // 2, random.randint(200, 500))
         gfw.world.add(gfw.layer.item, jelly)
@@ -75,7 +75,7 @@ def check_items():
 
 def draw():
     gfw.world.draw()
-    #draw_collision_box()
+    #gobj.draw_collision_box()
     font.draw(canvas_width/2, canvas_height - 45, '%d' % player.score)
 
 def handle_event(e):

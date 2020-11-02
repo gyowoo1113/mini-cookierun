@@ -23,8 +23,14 @@ class Jelly:
         self.fidx = 0
         self.time = 0
         self.char = 'jelly'
+        self.speed = 300
         self.jelly_time =0
         self.images = Jelly.load_images(self.char)
+        if gfw.world.count_at(gfw.layer.player) > 0:
+            self.player = gfw.world.object(gfw.layer.player, 0)
+
+        #self.target= 0
+        #self.delta = 0
 
     @staticmethod
     def load_all_images():
@@ -57,6 +63,8 @@ class Jelly:
     def update(self):
         self.jelly_time += gfw.delta_time
         self.time += gfw.delta_time
+        if self.player.MAGNET == True:
+            self.move_to_player()
 
     def draw(self):
         self.fidx = round(self.time * Jelly.FPS)
@@ -74,4 +82,40 @@ class Jelly:
 
     def get_bb(self):
         return self.x,self.y,self.x+self.w,self.y+ self.h
+
+    def update_position(self):
+        self.time += gfw.delta_time
+        self.fidx = round(self.time * Jelly.FPS)
+
+        x,y = self.x,self.y
+        dx,dy = self.delta
+        x += dx * self.speed * gfw.delta_time
+        y += dy * self.speed * gfw.delta_time
+
+        # print(self.pos, self.delta, self.target, x, y, dx, dy)
+
+        tx,ty = self.target
+        if dx > 0 and x >= tx or dx < 0 and x <= tx:
+            x = tx
+            done = True
+        if dy > 0 and y >= ty or dy < 0 and y <= ty:
+            y = ty
+            done = True
+
+        self.x,self.y = x,y
+
+    def move_to_player(self):
+        self.set_target(self.player.pos)
+        self.update_position()
+        #collides = gobj.collides_box(self, self.player)
+
+    def set_target(self, target):
+        x,y = self.x,self.y
+        tx,ty = target
+        dx, dy = tx - x, ty - y
+        distance = math.sqrt(dx**2 + dy**2)
+        if distance == 0: return
+
+        self.target = target
+        self.delta = dx / distance, dy / distance
 

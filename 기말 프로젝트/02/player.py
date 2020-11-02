@@ -16,6 +16,7 @@ class Player:
     FIDX = 0
     SIZE = {'cocoa': 1.2,'yogurt': 1.5}
     BIG = 1
+    MAGNET = False
     SUPER = False
     def __init__(self):
         if len(Player.images) == 0:
@@ -133,6 +134,9 @@ class Player:
             if self.BIG != 1:
                 self.BIG = 1
                 self.SUPER = False
+        elif Player.FIDX > 10.0:
+            if self.MAGNET == True:
+                self.MAGNET = False
 
     def check(self,item):
         if item.type == 'jelly':
@@ -141,8 +145,10 @@ class Player:
             self.cnt = self.fidx
             self.BIG = 0.75
             self.SUPER = True
-#        elif time.type == 'magnet':
-#            pass    #자석젤리
+        elif item.type == 'magnet':
+            self.cnt = self.fidx
+            self.MAGNET = True
+
 
     def handle_event(self, e):
         if e.type == SDL_KEYDOWN:
