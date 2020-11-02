@@ -2,11 +2,11 @@ from pico2d import *
 import gfw
 import gobj
 import random
+from jelly import Jelly
 
 PLAYER_SIZE = 270
 
 class Player:
-    BIG, = range(1)
     SLIDE_DURATION = 1.0
     ACTIONS = ['dead', 'doublejump', 'jump', 'slide','run','falling']
     GRAVITY = 3000
@@ -14,6 +14,9 @@ class Player:
     images = {}
     FPS = 10
     FIDX = 0
+    SIZE = {'cocoa': 1.2,'yogurt': 1.5}
+    BIG = 1
+    SUPER = False
     def __init__(self):
         if len(Player.images) == 0:
             Player.load_all_images()
@@ -34,6 +37,7 @@ class Player:
         self.cnt = 0
 
         self.score = 0
+        self.size = self.SIZE[self.char]
         #self.check = -1
 
     @staticmethod
@@ -96,7 +100,9 @@ class Player:
         self.fidx = round(self.time * Player.FPS)
         images = self.images[self.action]
         image = images[self.fidx % len(images)]
-        self.w, self.h = image.w,image.h
+        big = self.size*self.BIG
+
+        self.w, self.h = image.w/big, image.h/big
 
         self.change(len(images))
 
@@ -123,8 +129,20 @@ class Player:
         if self.action == 'doublejump':
             if Player.FIDX == img_len:
                 self.action = 'falling'
-        #if self.action == 'stand':
-        #        self.action = 'run'
+        if Player.FIDX > 30.0:
+            if self.BIG != 1:
+                self.BIG = 1
+                self.SUPER = False
+
+    def check(self,item):
+        if item.type == 'jelly':
+            self.score += 150
+        elif item.type == 'biggest':
+            self.cnt = self.fidx
+            self.BIG = 0.75
+            self.SUPER = True
+#        elif time.type == 'magnet':
+#            pass    #자석젤리
 
     def handle_event(self, e):
         if e.type == SDL_KEYDOWN:

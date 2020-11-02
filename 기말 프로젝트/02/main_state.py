@@ -1,12 +1,12 @@
 import gfw
 import os.path
 from pico2d import *
-from gobj import *
+import gobj
 from player import Player
 from background import HorzScrollBackground
 from platform import Platform
 from jelly import Jelly
-from check import *
+import random
 
 canvas_width= 1120
 canvas_height = 630
@@ -50,7 +50,7 @@ def move_platform():
                 r = obj.right
                 if x < r: x = r
 
-    check_items(player)
+    check_items()
 
     cw = 2 * get_canvas_width()
     while x < cw:
@@ -59,12 +59,19 @@ def move_platform():
         gfw.world.add(gfw.layer.platform, pf)
 
         # 임시로 랜덤선택 해놓음
-        type = random.choice(['jelly','magnet','biggest'])
+        type = random.choice(['jelly','biggest'])
 
         jelly = Jelly(type, x + pf.width // 2, random.randint(200, 500))
         gfw.world.add(gfw.layer.item, jelly)
         # print('adding platform:', gfw.world.count_at(gfw.layer.platform))
         x += pf.width
+
+def check_items():
+    for item in gfw.world.objects_at(gfw.layer.item):
+        if gobj.collides_box(player, item):
+            gfw.world.remove(item)
+            player.check(item)
+            break
 
 def draw():
     gfw.world.draw()
