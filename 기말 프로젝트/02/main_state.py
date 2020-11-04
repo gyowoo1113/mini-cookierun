@@ -7,6 +7,7 @@ from background import HorzScrollBackground
 from platform import Platform
 from jelly import Jelly
 import random
+import stage_gen
 
 canvas_width= 1120
 canvas_height = 630
@@ -31,40 +32,23 @@ def enter():
     global font
     font = load_font(gobj.RES_DIR + 'font/CookieRun Regular.ttf', 40)
 
-
+    stage_gen.load(gobj.res('stage_01.txt'))
 
 
 def update():
     gfw.world.update()
 
-    move_platform()
+    dx = -250 * gfw.delta_time
 
-def move_platform():
-
-    x = 0
-    dx = -200 * gfw.delta_time
-    for layer in range(gfw.layer.enemy, gfw.layer.item + 1):
+    for layer in range(gfw.layer.platform, gfw.layer.item + 1):
         for obj in gfw.world.objects_at(layer):
             obj.move(dx)
-            if hasattr(obj, 'right'):
-                r = obj.right
-                if x < r: x = r
 
     check_items()
 
-    cw = 2 * get_canvas_width()
-    while x < cw:
-        t = Platform.T_6x7
-        pf = Platform(t, x, 0)
-        gfw.world.add(gfw.layer.platform, pf)
-
-        # 임시로 랜덤선택 해놓음
-        type = random.choice(['jelly','jelly','jelly','jelly','magnet'])
-
-        jelly = Jelly(type, x + pf.width // 2, random.randint(200, 500))
-        gfw.world.add(gfw.layer.item, jelly)
-        # print('adding platform:', gfw.world.count_at(gfw.layer.platform))
-        x += pf.width
+    stage_gen.update(dx)
+    for item in gfw.world.objects_at(gfw.layer.item):
+        item.check_player()
 
 def check_items():
     for item in gfw.world.objects_at(gfw.layer.item):

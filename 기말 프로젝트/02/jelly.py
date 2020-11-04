@@ -11,6 +11,7 @@ class Jelly:
     images = {}
     TYPES = ['jelly','magnet', 'bonus', 'boss', 'speed','biggest']
     FPS = 5
+    player = None
 
     def __init__(self, type, x, y):
         if len(Jelly.images) == 0:
@@ -19,15 +20,13 @@ class Jelly:
         self.x, self.y = x, y
         self.rect = 0,0,37,37
 
-        self.type = type
+        self.type = self.TYPES[type]
         self.fidx = 0
         self.time = 0
         self.char = 'jelly'
         self.speed = 300
         self.jelly_time =0
         self.images = Jelly.load_images(self.char)
-        if gfw.world.count_at(gfw.layer.player) > 0:
-            self.player = gfw.world.object(gfw.layer.player, 0)
 
         #self.target= 0
         #self.delta = 0
@@ -118,4 +117,9 @@ class Jelly:
 
         self.target = target
         self.delta = dx / distance, dy / distance
+
+    def check_player(self):
+        if self.player is None:
+            if gfw.world.count_at(gfw.layer.player) > 0:
+                self.player = gfw.world.object(gfw.layer.player, 0)
 
