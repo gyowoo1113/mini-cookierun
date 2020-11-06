@@ -97,11 +97,12 @@ class Player:
                     self.jump_speed = 0
                     # print('Now running', t, foot)
 
+
     def draw(self):
         self.fidx = round(self.time * Player.FPS)
         images = self.images[self.action]
         image = images[self.fidx % len(images)]
-        big = self.size*self.BIG
+        big = self.size*self.mag
 
         self.w, self.h = image.w/big, image.h/big
 
@@ -109,6 +110,11 @@ class Player:
 
 #        size = PLAYER_SIZE * self.mag, PLAYER_SIZE * self.mag
         image.draw_to_origin(*self.pos,self.w, self.h)
+
+    def magnify(self):
+        self.mag_speed = 1.0
+    def reduce(self):
+        self.mag_speed = -1.0
 
     def slide(self):
         if self.action != 'run': return
@@ -123,17 +129,16 @@ class Player:
         elif self.action == 'jump':
             self.action = 'doublejump'
             self.cnt = self.fidx
-        self.jump_speed = Player.JUMP * self.mag
+        self.jump_speed = Player.JUMP #* self.mag
 
     def change(self,img_len):
         Player.FIDX = self.fidx - self.cnt
         if self.action == 'doublejump':
             if Player.FIDX == img_len:
                 self.action = 'falling'
-        if Player.FIDX > 30.0:
-            if self.BIG != 1:
-                self.BIG = 1
-                self.SUPER = False
+        if Player.FIDX > 20.0:
+            if self.mag < 1:
+                self.reduce()
         elif Player.FIDX > 10.0:
             if self.MAGNET == True:
                 self.MAGNET = False
@@ -143,12 +148,12 @@ class Player:
             self.score += 150
         elif item.type == 'biggest':
             self.cnt = self.fidx
-            self.BIG = 0.75
+            if self.mag == 1 and self.mag_speed == 0:
+                self.magnify()
             self.SUPER = True
         elif item.type == 'magnet':
             self.cnt = self.fidx
             self.MAGNET = True
-
 
     def handle_event(self, e):
         if e.type == SDL_KEYDOWN:
@@ -188,25 +193,17 @@ class Player:
         # if selected is not None:
         #     print(l,b,r,t, selected)
         return selected
-
     def update_mag(self):
         if self.mag_speed == 0: return
 
-        x,y = self.pos
-        _,b,_,_ = self.get_bb()
-        diff = y - b
-        prev_mag = self.mag
-
-        self.mag += self.mag_speed * gfw.delta_time
-        if self.mag > 2.0:
-            self.mag = 2.0
+        self.mag -= self.mag_speed * gfw.delta_time
+        if self.mag < 0.75:
+            self.mag = 0.75
             self.mag_speed = 0
-        elif self.mag < 1.0:
+        elif self.mag > 1.2:
             self.mag = 1.0
             self.mag_speed = 0
-
-        new_y = b + diff * self.mag / prev_mag
-        self.pos = x,new_y
+            self.SUPER = False
 
     def move(self, diff):
         self.pos = gobj.point_add(self.pos, diff)
