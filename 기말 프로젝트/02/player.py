@@ -32,6 +32,7 @@ class Player:
 
         self.mag = 1
         self.mag_speed = 0
+        self.jump_speed = 0
         self.cookie_time = 0
 
         self.w,self.h = 0,0
@@ -98,7 +99,6 @@ class Player:
                     # print('Now running', t, foot)
         else:
             self.action = 'falling'
-            self.jump_speed = 0
             self.move_down_platform()
 
 

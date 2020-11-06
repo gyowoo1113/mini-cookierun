@@ -3,15 +3,22 @@ import main_state
 
 gfw.run(main_state)
 
-# jelly size 통일
-# cookie, jelly -> json (깔끔하게 정리하기)
+# 1. 장애물 구현
+# 2. running stage 좌표지정 완료
+
+# 보완해야 하는 것
+# 객체들 size조절
+# platform 위치조정
+# stage 간격수정
+# 크기젤리 -> 장애물 파괴기능 추가
+# 화면밖에 벗어났을 때 꼭대기에서 리젠되는 방식이 아니라,
+# 무적상태를 받아 서서히 올라온 후 떨어지도록 수정
+
 # 젤리 기능추가:
 # 체력회복: 장애물 구현 후
 # 보너스: 에디터 제작 후
 # 보스: 장애물 구현 후
 # 스피드: 구현미정( 시간 남았을때)
-# 추가한 jelly 충돌체크 박스 수정필요
-# 장애물 기본구현 -> 에디터
-# 에디터 만든 후 main_state 깔끔하게 정리하기
+
 # ** player -> jump,magnet,biggest time 재는 cnt 변수를 공유하고 있음
 # ** 오류 생기지 않는지 체크 후 수정필요
