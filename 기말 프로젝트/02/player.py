@@ -96,6 +96,10 @@ class Player:
                     self.action = 'run'
                     self.jump_speed = 0
                     # print('Now running', t, foot)
+        else:
+            self.action = 'falling'
+            self.jump_speed = 0
+            self.move_down_platform()
 
 
     def draw(self):
@@ -193,6 +197,10 @@ class Player:
         # if selected is not None:
         #     print(l,b,r,t, selected)
         return selected
+    def move_down_platform(self):
+        x,y = self.pos
+        y -= 8
+        self.pos = x,y
     def update_mag(self):
         if self.mag_speed == 0: return
 
