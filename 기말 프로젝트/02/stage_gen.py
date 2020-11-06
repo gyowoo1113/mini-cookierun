@@ -3,10 +3,11 @@ from pico2d import *
 from platform import Platform
 from jelly import Jelly
 import gobj
+from player import Player
 
 UNIT_PER_LINE = 100
 SCREEN_LINES = 10
-BLOCK_SIZE = 10
+BLOCK_SIZE = 60
 
 lines = []
 
@@ -69,6 +70,7 @@ def test_gen():
 
 def test_gen_2():
     open_canvas()
+
     gfw.world.init(['item', 'platform'])
     load(gobj.res('stage_01.txt'))
     for i in range(100):

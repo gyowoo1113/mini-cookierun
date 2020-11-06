@@ -3,9 +3,9 @@ from pico2d import *
 import gfw
 import gobj
 
-UNIT = 10
+UNIT = 20
 INFO = [
-    (6 * UNIT, 2 * UNIT, 'map_obj/bottom_01.png'),
+    (6.5 * UNIT, 2 * UNIT, 'map_obj/bottom_01.png'),
 #    (6 * UNIT, 7 * UNIT, 'map_obj/bottom_02.png'),
     (6 * UNIT, 7 * UNIT, 'map_obj/bottom_03.png'),
 ]

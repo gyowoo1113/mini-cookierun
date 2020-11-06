@@ -34,8 +34,10 @@ def enter():
 
     stage_gen.load(gobj.res('stage_01.txt'))
 
-
+paused = False
 def update():
+    if paused:
+        return
     gfw.world.update()
 
     dx = -250 * gfw.delta_time
@@ -54,12 +56,12 @@ def check_items():
     for item in gfw.world.objects_at(gfw.layer.item):
         if gobj.collides_box(player, item):
             gfw.world.remove(item)
-            player.check(item)
+            #player.check(item)
             break
 
 def draw():
     gfw.world.draw()
-    #gobj.draw_collision_box()
+    gobj.draw_collision_box()
     font.draw(canvas_width/2, canvas_height - 45, '%d' % player.score)
 
 def handle_event(e):
@@ -71,6 +73,10 @@ def handle_event(e):
         if e.key == SDLK_ESCAPE:
             gfw.pop()
             return
+
+    elif e.key == SDLK_p:
+        global paused
+        paused = not paused
 
     if player.handle_event(e):
         return
