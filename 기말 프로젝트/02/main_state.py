@@ -13,7 +13,7 @@ canvas_width= 1120
 canvas_height = 630
 
 def enter():
-    gfw.world.init(['bg','enemy','platform','item','player'])
+    gfw.world.init(['bg','platform','enemy','item','player'])
     Player.load_all_images()
     Jelly.load_all_images()
 
@@ -47,6 +47,7 @@ def update():
             obj.move(dx)
 
     check_items()
+    check_obstacles()
 
     stage_gen.update(dx)
     for item in gfw.world.objects_at(gfw.layer.item):
@@ -59,10 +60,17 @@ def check_items():
             #player.check(item)
             break
 
+def check_obstacles():
+    for enemy in gfw.world.objects_at(gfw.layer.enemy):
+        if enemy.hit: continue
+        if gobj.collides_box(player, enemy):
+            enemy.hit = True
+            # 체력바 감소 추가
+
 def draw():
     gfw.world.draw()
     gobj.draw_collision_box()
-    font.draw(canvas_width/2, canvas_height - 45, '%d' % player.score)
+    font.draw(canvas_width/2-30, canvas_height - 45, '%d' % player.score)
 
 def handle_event(e):
     # prev_dx = boy.dx

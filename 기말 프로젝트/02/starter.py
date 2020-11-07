@@ -3,8 +3,9 @@ import main_state
 
 gfw.run(main_state)
 
-# 1. 장애물 구현
-# 2. running stage 좌표지정 완료
+# 1. running stage 좌표지정 완료
+# 2. chaser 장애물 구현
+# 3. 체력바 구현
 
 # 보완해야 하는 것
 # 객체들 size조절

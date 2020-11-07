@@ -98,9 +98,7 @@ class Player:
                     self.jump_speed = 0
                     # print('Now running', t, foot)
         else:
-            self.action = 'falling'
             self.move_down_platform()
-
 
     def draw(self):
         self.fidx = round(self.time * Player.FPS)
@@ -197,10 +195,12 @@ class Player:
         # if selected is not None:
         #     print(l,b,r,t, selected)
         return selected
+
     def move_down_platform(self):
         x,y = self.pos
-        y -= 8
+        y -=  gfw.delta_time
         self.pos = x,y
+
     def update_mag(self):
         if self.mag_speed == 0: return
 

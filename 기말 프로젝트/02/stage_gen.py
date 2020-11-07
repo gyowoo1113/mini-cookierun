@@ -4,14 +4,20 @@ from platform import Platform
 from jelly import Jelly
 import gobj
 from player import Player
+from factory import Factory
 
 UNIT_PER_LINE = 100
 SCREEN_LINES = 10
 BLOCK_SIZE = 60
 
+factory = None
 lines = []
 
 def load(file):
+    global factory
+    if factory is None:
+        factory = Factory()
+
     global lines, current_x, create_at, map_index
     with open(file, 'r') as f:
         lines = f.readlines()
@@ -19,6 +25,7 @@ def load(file):
     map_index = 0
     create_at = get_canvas_width() + 2 * BLOCK_SIZE
 
+ignore_char_map = set()
 def count():
     return len(lines) // SCREEN_LINES * UNIT_PER_LINE
 
@@ -51,6 +58,17 @@ def create_object(ch, x, y):
         obj = Platform(ord(ch) - ord('O'), x, y)
         gfw.world.add(gfw.layer.platform, obj)
         #print('creating Platform', x, y)
+    else:
+        ao = factory.create(ch, x, y)
+        if ao is None:
+            global ignore_char_map
+            if ch not in ignore_char_map:
+                print("Error? I don't know about: '%s'" % ch)
+                ignore_char_map |= {ch}
+            return
+        l,b,r,t = ao.get_bb()
+        ao.pass_wh(r-l, t-b)
+        gfw.world.add(gfw.layer.enemy, ao)
 
 def get(x, y):
     col = x % UNIT_PER_LINE
