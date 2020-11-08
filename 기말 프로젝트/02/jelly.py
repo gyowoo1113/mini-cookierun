@@ -9,7 +9,7 @@ JELLY_SIZE = 37
 
 class Jelly:
     images = {}
-    TYPES = ['jelly','biggest', 'bonus', 'boss', 'speed','magnet']
+    TYPES = ['jelly','biggest', 'bonus', 'boss','start','speed','magnet']
     FPS = 5
     player = None
 

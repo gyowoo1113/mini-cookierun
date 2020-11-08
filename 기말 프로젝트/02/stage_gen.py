@@ -47,7 +47,7 @@ def create_column():
     #print('map_index:', map_index)
 
 def create_object(ch, x, y):
-    if ch in ['1','2','3','4']:
+    if ch in ['1','2','3','4','5']:
         obj = Jelly(ord(ch) - ord('1'), x, y)
         gfw.world.add(gfw.layer.item, obj)
         #print('creating Jelly', x, y)
@@ -58,6 +58,8 @@ def create_object(ch, x, y):
         obj = Platform(ord(ch) - ord('O'), x, y)
         gfw.world.add(gfw.layer.platform, obj)
         #print('creating Platform', x, y)
+    elif ch in ['B']:
+        pass
     else:
         ao = factory.create(ch, x, y)
         if ao is None:
