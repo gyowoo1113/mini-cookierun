@@ -70,9 +70,14 @@ def check_items():
 def check_obstacles():
     for enemy in gfw.world.objects_at(gfw.layer.enemy):
         if enemy.hit: continue
+        if enemy.crash: continue
         if gobj.collides_box(player, enemy):
-            enemy.hit = True
-            # 체력바 감소 추가
+            if player.SUPER:
+                enemy.crash = True
+                player.score +=100
+            else:
+                enemy.hit = True
+                # 체력바 감소 추가
 
 def check_obsBoss():
     pass                #충돌체크 -> hit true로 변경될때 self.cnt = self.fdix
