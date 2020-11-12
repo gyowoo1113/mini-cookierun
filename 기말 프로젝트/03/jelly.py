@@ -72,7 +72,6 @@ class Jelly:
         self.fidx = round(self.time * Jelly.FPS)
         images = self.images[self.type]
         image = images[self.fidx % len(images)]
-        #이미지 사이즈 조절 시 수정필요
         self.w, self.h = image.w/self.size,image.h/self.size
 
         image.draw_to_origin(self.x, self.y,self.w,self.h)
