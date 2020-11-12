@@ -7,9 +7,6 @@ gfw.run(main_state)
 # 2. 체력바 구현
 # 3. state push/pop 정리하기
 
-# Boss(chaser) -> attack 제외하곤 충돌체크 하지않음
-# -> attack 이후 충돌상태 아닐때까지 attack 마지막 image에서 멈춰있음
-# -> 일어날때 좀 늦게 일어나게 해야함 -> FPS 건드리는 것보다 FIDX 건드리는게 나을듯
 # Boss(another) -> 화면앞에서 알짱거림
 # -> 앞의 장애물을 공격해서 캐릭터를 향해 던짐
 # -> 장애물 만들어서 던짐

@@ -49,6 +49,7 @@ def update():
 
     check_items()
     check_obstacles()
+    check_obsBoss()
 
     stage_gen.update(dx)
     for item in gfw.world.objects_at(gfw.layer.item):
@@ -80,7 +81,12 @@ def check_obstacles():
                 # 체력바 감소 추가
 
 def check_obsBoss():
-    pass                #충돌체크 -> hit true로 변경될때 self.cnt = self.fdix
+    for boss in gfw.world.objects_at(gfw.layer.boss):
+        if boss.hit: continue
+        if gobj.collides_box(player, boss):
+            if not boss.action in ['sleep','end'] :
+                boss.hit = True
+                # 체력바 감소 추가
 
 def draw():
     gfw.world.draw()

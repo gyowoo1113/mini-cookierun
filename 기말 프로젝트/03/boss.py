@@ -5,7 +5,7 @@ import random
 from jelly import Jelly
 
 class Boss:
-    ACTIONS = ['dead', 'sleep', 'wake', 'damage','run','attack']
+    ACTIONS = ['dead', 'sleep', 'wake', 'damage','run','end']
     images = {}
     FPS = 10
     FIDX = 0
@@ -21,7 +21,7 @@ class Boss:
         self.images = Boss.load_images(self.char)
         self.action = 'sleep'
         self.delta = 0, 0
-        self.speed = 10
+        self.speed = 50
 
 #        self.w,self.h = 0,0
         self.cnt = 0
@@ -29,6 +29,7 @@ class Boss:
 
         self.hit = False
         self.dam = 0
+        self.wake = False
 
     @staticmethod
     def load_all_images():
@@ -76,7 +77,6 @@ class Boss:
         Boss.FIDX = self.fidx - self.cnt
         if self.action == 'wake':
             if Boss.FIDX == img_len:
-                self.FPS = 10
                 self.action = 'run'
         if self.action == 'damage':
             if Boss.FIDX == img_len:
@@ -87,6 +87,20 @@ class Boss:
         if self.action == 'dead':
             if Boss.FIDX == img_len:
                 gfw.world.remove(self)
+        if self.wake:
+            if Boss.FIDX >10:
+                self.action = 'wake'
+                self.cnt = self.fidx
+                self.wake = False
+        if self.hit:
+            self.action = 'end'
+            self.cnt = self.fidx
+            self.hit = False
+        if self.action == 'end':
+            if Boss.FIDX == img_len:
+                self.action = 'sleep'
+
+
 
     def check(self,item):
         if item.type == 'boss':
@@ -94,9 +108,8 @@ class Boss:
             self.dam += 1
             self.cnt = self.fidx
         elif item.type == 'start':
-            self.FPS = 0.1
-            self.action = 'wake'
             self.cnt = self.fidx
+            self.wake = True
 
     def get_bb(self):
         return self.x, self.y, self.x + self.w, self.y + self.h
@@ -104,10 +117,11 @@ class Boss:
     def move(self, dx):
         if self.action in ['run']:
             self.x += gfw.delta_time * self.speed
-        elif self.action in ['sleep','damage']:
+        elif self.action in ['sleep','damage','end']:
             self.x += dx
 
-        if self.x + self.w < 0:
-            gfw.world.remove(self)
+        if self.action in ['sleep','end']:
+            if self.x + self.w < 0:
+                gfw.world.remove(self)
 
 
