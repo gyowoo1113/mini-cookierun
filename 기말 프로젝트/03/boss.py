@@ -117,6 +117,8 @@ class Boss:
     def move(self, dx):
         if self.action in ['run']:
             self.x += gfw.delta_time * self.speed
+            if self.x > get_canvas_width():
+                gfw.world.remove(self)
         elif self.action in ['sleep','damage','end']:
             self.x += dx
 

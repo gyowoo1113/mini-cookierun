@@ -7,6 +7,7 @@ from background import HorzScrollBackground
 from platform import Platform
 from jelly import Jelly
 from boss import Boss
+from life_gauge import Life
 import random
 import stage_gen
 
@@ -14,7 +15,7 @@ canvas_width= 1120
 canvas_height = 630
 
 def enter():
-    gfw.world.init(['bg','platform','enemy','boss','item','player'])
+    gfw.world.init(['bg','platform','enemy','boss','item','player','ui'])
     Player.load_all_images()
     Jelly.load_all_images()
 
@@ -27,11 +28,14 @@ def enter():
 
     global player
     player = Player()
-#    player.bg = bg
     gfw.world.add(gfw.layer.player, player)
 
     global font
-    font = load_font(gobj.RES_DIR + 'font/CookieRun Regular.ttf', 40)
+    font = load_font(gobj.RES_DIR + 'font/CookieRun Regular.ttf', 30)
+
+    global life
+    life = Life()
+    gfw.world.add(gfw.layer.ui, life)
 
     stage_gen.load(gobj.res('stage_boss.txt'))
 
@@ -52,12 +56,8 @@ def update():
     check_obsBoss()
 
     stage_gen.update(dx)
-    for item in gfw.world.objects_at(gfw.layer.item):
-        item.check_player()
 
-    global boss
-    if gfw.world.count_at(gfw.layer.boss) > 0:
-        boss = gfw.world.object(gfw.layer.boss, 0)
+    call_obj()
 
 def check_items():
     for item in gfw.world.objects_at(gfw.layer.item):
@@ -88,10 +88,18 @@ def check_obsBoss():
                 boss.hit = True
                 # 체력바 감소 추가
 
+def call_obj():
+    for item in gfw.world.objects_at(gfw.layer.item):
+        item.check_player()
+
+    global boss
+    if gfw.world.count_at(gfw.layer.boss) > 0:
+        boss = gfw.world.object(gfw.layer.boss, 0)
+
 def draw():
     gfw.world.draw()
     gobj.draw_collision_box()
-    font.draw(canvas_width/2-30, canvas_height - 45, '%d' % player.score)
+    font.draw(canvas_width/2-30, canvas_height - 65, '%d' % player.score)
 
 def handle_event(e):
     # prev_dx = boy.dx
