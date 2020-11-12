@@ -10,6 +10,7 @@ JELLY_SIZE = 37
 class Jelly:
     images = {}
     TYPES = ['jelly','magnet','biggest','start','boss','bonus','speed',]
+    SIZE = {'jelly':0.7,'magnet':1.6,'biggest':1.6,'start':1,'boss':1.4,}
     FPS = 5
     player = None
 
@@ -23,11 +24,12 @@ class Jelly:
         self.type = self.TYPES[type]
         self.fidx = 0
         self.time = 0
-        self.char = 'jelly'
+        self.char = 'jelly' #파일명
         self.speed = 500
         self.moving = 10
         self.jelly_time =0
         self.images = Jelly.load_images(self.char)
+        self.size = self.SIZE[self.type]
 
         #self.target= 0
         #self.delta = 0
@@ -71,9 +73,9 @@ class Jelly:
         images = self.images[self.type]
         image = images[self.fidx % len(images)]
         #이미지 사이즈 조절 시 수정필요
-        self.w, self.h = image.w,image.h
+        self.w, self.h = image.w/self.size,image.h/self.size
 
-        image.draw_to_origin(self.x, self.y)
+        image.draw_to_origin(self.x, self.y,self.w,self.h)
 
     def move(self, dx):
         self.x += dx
