@@ -4,8 +4,6 @@ import main_state
 gfw.run(main_state)
 
 # 1. running stage 좌표지정 완료
-# 2. boss,obs -> power, life.life -= power
-# 3. state push/pop 정리하기
 
 # Boss(another) -> 화면앞에서 알짱거림
 # -> 앞의 장애물을 공격해서 캐릭터를 향해 던짐
