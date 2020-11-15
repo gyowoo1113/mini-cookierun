@@ -14,6 +14,7 @@ class Player:
     images = {}
     FPS = 10
     FIDX = 0
+    sp_FIDX = 0
     SIZE = {'cocoa': 1.4,'yogurt': 1.7}
     BIG = 1
     MAGNET = False
@@ -37,6 +38,7 @@ class Player:
 
         self.w,self.h = 0,0
         self.cnt = 0
+        self.sp_cnt = 0
 
         self.score = 0
         self.size = self.SIZE[self.char]
@@ -135,6 +137,7 @@ class Player:
 
     def change(self,img_len):
         Player.FIDX = self.fidx - self.cnt
+        Player.sp_FIDX = self.fidx - self.sp_cnt
         if self.action == 'doublejump':
             if Player.FIDX == img_len:
                 self.action = 'falling'
@@ -144,6 +147,9 @@ class Player:
         elif Player.FIDX > 10.0:
             if self.MAGNET == True:
                 self.MAGNET = False
+        if self.SUPER and self.mag == 1.0:
+            if Player.sp_FIDX > 20.0:
+                self.SUPER = False
 
     def check(self,item):
         if item.type == 'jelly':
@@ -215,4 +221,8 @@ class Player:
 
     def move(self, diff):
         self.pos = gobj.point_add(self.pos, diff)
+
+    def give_super(self):
+        self.SUPER = True
+        self.sp_cnt = self.fidx
 
