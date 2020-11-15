@@ -8,7 +8,7 @@ class Background:
         self.image = gfw.image.load(res(imageName))
         self.target = None
         self.cw, self.ch = get_canvas_width(), get_canvas_height()
-        self.win_rect = 0, 0, self.cw, self.ch
+        self.win_rect = self.cw, self.ch
         self.center = self.image.w // 2, self.image.h // 2
         hw, hh = self.cw // 2, self.    ch // 2
         self.boundary = hw, hh, self.image.w - hw, self.image.h - hh
@@ -16,7 +16,7 @@ class Background:
         self.target = target
         self.update()
     def draw(self):
-        self.image.clip_draw_to_origin(*self.win_rect, 0, 0)
+        self.image.draw_to_origin(0,0,*self.win_rect)
     def update(self):
         if self.target is None:
             return

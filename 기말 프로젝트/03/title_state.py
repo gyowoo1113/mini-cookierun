@@ -1,14 +1,16 @@
 import gfw
 from pico2d import *
 import gobj
+from background import Background
 import ready_state
 
 canvas_width= 1120
 canvas_height = 630
 
 def build_world():
-    global image
-    image = load_image('../res/map_bg/title.png')
+    gfw.world.init(['bg',])
+    bg = Background('../res/map_bg/title.png')
+    gfw.world.add(gfw.layer.bg, bg)
 
 def enter():
     build_world()
@@ -17,7 +19,7 @@ def update():
     pass
 
 def draw():
-    image.draw_to_origin(0,0,get_canvas_width(),get_canvas_height())
+    gfw.world.draw()
 
 def handle_event(e):
     if e.type == SDL_QUIT:
@@ -28,14 +30,13 @@ def handle_event(e):
         gfw.push(ready_state)
 
 def exit():
-    global image
-    del image
+    pass
 
 def pause():
     pass
 
 def resume():
-    pass
+    build_world()
 
 if __name__ == '__main__':
     gfw.run_main()
