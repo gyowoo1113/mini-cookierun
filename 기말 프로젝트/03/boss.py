@@ -21,7 +21,8 @@ class Boss:
         self.images = Boss.load_images(self.char)
         self.action = 'sleep'
         self.delta = 0, 0
-        self.speed = 50
+        self.speed = 35
+        self.power = 100
 
 #        self.w,self.h = 0,0
         self.cnt = 0

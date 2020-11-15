@@ -11,10 +11,11 @@ from life_gauge import Life
 import random
 import stage_gen
 
+# ''
 canvas_width= 1120
 canvas_height = 630
 
-def enter():
+def build_world():
     gfw.world.init(['bg','platform','enemy','boss','item','player','ui'])
     Player.load_all_images()
     Jelly.load_all_images()
@@ -40,6 +41,10 @@ def enter():
     stage_gen.load(gobj.res('stage_boss.txt'))
 
 paused = False
+
+def enter():
+    build_world()
+
 def update():
     if paused:
         return
@@ -74,11 +79,13 @@ def check_obstacles():
         if enemy.crash: continue
         if gobj.collides_box(player, enemy):
             if player.SUPER:
-                enemy.crash = True
-                player.score +=100
+                if not player.mag == 1.0:
+                    enemy.crash = True
+                    player.score +=100
             else:
                 enemy.hit = True
-                # 체력바 감소 추가
+                life.life -= enemy.power
+                player.give_super()
 
 def check_obsBoss():
     for boss in gfw.world.objects_at(gfw.layer.boss):
@@ -86,7 +93,8 @@ def check_obsBoss():
         if gobj.collides_box(player, boss):
             if not boss.action in ['sleep','end'] :
                 boss.hit = True
-                # 체력바 감소 추가
+                life.life -= boss.power
+                player.give_super()
 
 def call_obj():
     for item in gfw.world.objects_at(gfw.layer.item):
