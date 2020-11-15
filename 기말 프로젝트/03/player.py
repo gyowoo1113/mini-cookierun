@@ -153,7 +153,11 @@ class Player:
 
     def check(self,item):
         if item.type == 'jelly':
-            self.score += 150
+            if gfw.world.count_at(gfw.layer.score) > 0:
+                self.score = gfw.gfw.world.object(gfw.layer.score, 0)
+
+            self.score.score += 150
+            self.score.display += 150
         elif item.type == 'biggest':
             self.cnt = self.fidx
             if self.mag == 1 and self.mag_speed == 0:

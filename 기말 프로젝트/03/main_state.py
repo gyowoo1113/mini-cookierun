@@ -8,15 +8,17 @@ from platform import Platform
 from jelly import Jelly
 from boss import Boss
 from life_gauge import Life
+from score import Score
 import random
 import stage_gen
+import result_state
 
 # ''
 canvas_width= 1120
 canvas_height = 630
 
 def build_world():
-    gfw.world.init(['bg','platform','enemy','boss','item','player','ui'])
+    gfw.world.init(['bg','platform','enemy','boss','item','player','ui','score'])
     Player.load_all_images()
     Jelly.load_all_images()
 
@@ -37,6 +39,10 @@ def build_world():
     global life
     life = Life()
     gfw.world.add(gfw.layer.ui, life)
+
+    global score
+    score = Score(canvas_width/2-30, canvas_height - 65)
+    gfw.world.add(gfw.layer.score, score)
 
     stage_gen.load(gobj.res('stage_boss.txt'))
 
@@ -81,7 +87,8 @@ def check_obstacles():
             if player.SUPER:
                 if not player.mag == 1.0:
                     enemy.crash = True
-                    player.score +=100
+                    score.display += 100
+                    score.score +=100
             else:
                 enemy.hit = True
                 life.life -= enemy.power
@@ -106,19 +113,17 @@ def call_obj():
 
 def draw():
     gfw.world.draw()
-    gobj.draw_collision_box()
-    font.draw(canvas_width/2-30, canvas_height - 65, '%d' % player.score)
+    #gobj.draw_collision_box()
 
 def handle_event(e):
-    # prev_dx = boy.dx
     if e.type == SDL_QUIT:
         gfw.quit()
-        return
-    elif e.type == SDL_KEYDOWN:
-        if e.key == SDLK_ESCAPE:
-            gfw.pop()
-            return
-
+    elif (e.type, e.key) == (SDL_KEYDOWN, SDLK_ESCAPE):
+        gfw.pop()
+    elif (e.type, e.key) == (SDL_KEYDOWN, SDLK_RETURN):
+        gfw.push(result_state)
+        print(score.score)
+        result_state.add(score.score)
     elif e.key == SDLK_p:
         global paused
         paused = not paused
@@ -128,7 +133,11 @@ def handle_event(e):
 
 def exit():
     pass
-
+def pause():
+    pass
+def resume():
+    pass
+#    build_world()
 
 
 if __name__ == '__main__':
