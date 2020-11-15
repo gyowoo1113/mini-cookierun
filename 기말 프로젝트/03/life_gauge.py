@@ -11,6 +11,8 @@ class Life():
         self.icon = gfw.image.load(gobj.RES_DIR + 'ui/heart/heart_icon.png')
         self.effect = gfw.image.load(gobj.RES_DIR + 'ui/heart/effect.png')
         self.life = self.width
+        self.time = 0
+        self.life_time = 0
 
     def draw(self):
         self.bg.draw_to_origin(self.width/2, self.height, self.width, self.bg.h)
@@ -23,4 +25,6 @@ class Life():
     def enter(self):
         pass
     def update(self):
-        pass
+        self.time += gfw.delta_time
+        self.life -= self.time - self.life_time
+        self.life_time += gfw.delta_time
