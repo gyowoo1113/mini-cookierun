@@ -106,8 +106,10 @@ class Jelly:
         self.x,self.y = x,y
 
     def move_to_player(self):
-        self.set_target(self.player.pos)
-        self.update_position()
+
+        if self.x + self.w < get_canvas_width():
+            self.set_target(self.player.pos)
+            self.update_position()
         #collides = gobj.collides_box(self, self.player)
 
     def set_target(self, target):

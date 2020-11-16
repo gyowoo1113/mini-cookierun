@@ -13,8 +13,8 @@ class Player:
     JUMP = 1000
     images = {}
     FPS = 10
-    FIDX = 0
-    sp_FIDX = 0
+    FIDX = {'super':0,'magnet':0,'biggest':0,'dead':0,'doublejump':0}
+    cnt = {'super':0,'magnet':0,'biggest':0,'dead':0,'doublejump':0}
     SIZE = {'cocoa': 1.4,'yogurt': 1.7}
     BIG = 1
     MAGNET = False
@@ -37,13 +37,12 @@ class Player:
         self.cookie_time = 0
 
         self.w,self.h = 0,0
-        self.cnt = 0
-        self.sp_cnt = 0
 
         self.score = None
         self.life = None
         self.end = False
         self.size = self.SIZE[self.char]
+        self.font = load_font(gobj.RES_DIR + 'font/CookieRun Regular.ttf', 25)
 
     @staticmethod
     def load_all_images():
@@ -113,8 +112,10 @@ class Player:
 
         self.change(len(images))
 
-#        size = PLAYER_SIZE * self.mag, PLAYER_SIZE * self.mag
         image.draw_to_origin(*self.pos,self.w, self.h)
+        if self.SUPER:
+            x,y = self.pos
+            self.font.draw(x+self.w/4, y+self.h, '무적!!')
 
     def magnify(self):
         self.mag_speed = 1.0
@@ -133,42 +134,43 @@ class Player:
             self.action ='jump'
         elif self.action == 'jump':
             self.action = 'doublejump'
-            self.cnt = self.fidx
+            self.cnt['doublejump'] = self.fidx
         self.jump_speed = Player.JUMP #* self.mag
 
     def change(self,img_len):
-        Player.FIDX = self.fidx - self.cnt
-        Player.sp_FIDX = self.fidx - self.sp_cnt
+        for command in ('super','magnet','biggest','dead','doublejump'):
+            Player.FIDX[command] = self.fidx - self.cnt[command]
         if self.action == 'doublejump':
-            if Player.FIDX == img_len:
+            if Player.FIDX['doublejump'] == img_len:
                 self.action = 'falling'
-        if Player.FIDX > 20.0:
+        if Player.FIDX['biggest'] > 25.0:
             if self.mag < 1:
                 self.reduce()
-        elif Player.FIDX > 10.0:
+        elif Player.FIDX['magnet'] > 10.0:
             if self.MAGNET == True:
                 self.MAGNET = False
         if self.SUPER and self.mag == 1.0:
-            if Player.sp_FIDX > 20.0:
+            if Player.FIDX['super'] > 25.0:
                 self.SUPER = False
         if self.action == 'dead':
-            if Player.FIDX == img_len:
+            if Player.FIDX['dead'] == img_len:
                 self.end = True
         elif self.life.life == 0:
             self.action = 'dead'
-            self.cnt = self.fidx
+            self.cnt['dead'] = self.fidx
 
     def check(self,item):
         if item.type == 'jelly':
             self.score.score += 150
             self.score.display += 150
         elif item.type == 'biggest':
-            self.cnt = self.fidx
+            self.cnt['biggest'] = self.fidx
             if self.mag == 1 and self.mag_speed == 0:
                 self.magnify()
             self.SUPER = True
+            self.cnt['super'] = self.fidx
         elif item.type == 'magnet':
-            self.cnt = self.fidx
+            self.cnt['magnet'] = self.fidx
             self.MAGNET = True
         elif item.type == 'bigheart':
             self.life.life += 50
@@ -234,7 +236,7 @@ class Player:
 
     def give_super(self):
         self.SUPER = True
-        self.sp_cnt = self.fidx
+        self.cnt['super'] = self.fidx
 
     def check_ui(self):
         if self.score is None:
