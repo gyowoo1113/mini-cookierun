@@ -3,7 +3,7 @@ from pico2d import *
 from gobj import *
 
 class Background:
-    def __init__(self, imageName):
+    def __init__(self, imageName,bgmName,state):
         self.imageName = imageName
         self.image = gfw.image.load(res(imageName))
         self.target = None
@@ -12,6 +12,13 @@ class Background:
         self.center = self.image.w // 2, self.image.h // 2
         hw, hh = self.cw // 2, self.    ch // 2
         self.boundary = hw, hh, self.image.w - hw, self.image.h - hh
+
+        if state =='mp3':
+            self.bgm = load_music(RES_DIR + bgmName)
+        elif state == 'wav':
+            self.bgm = load_wav(RES_DIR + bgmName)
+        self.bgm.set_volume(70)
+        self.bgm.play(1)
     def set_target(self, target):
         self.target = target
         self.update()
@@ -121,12 +128,16 @@ class InfiniteBackground(Background):
         return tx + dx, ty + dy
 
 class HorzScrollBackground:
-    def __init__(self, imageName):
+    def __init__(self, imageName,bgmName):
         self.imageName = imageName
         self.image = gfw.image.load(res(imageName))
         self.cw, self.ch = get_canvas_width(), get_canvas_height()
         self.scroll = 0
         self.speed = 0
+
+        self.bgm = load_music(RES_DIR + bgmName)
+        self.bgm.set_volume(60)
+        self.bgm.repeat_play()
 
     def update(self):
         self.scroll += self.speed * gfw.delta_time

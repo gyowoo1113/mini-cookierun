@@ -44,6 +44,15 @@ class Player:
         self.size = self.SIZE[self.char]
         self.font = load_font(gobj.RES_DIR + 'font/CookieRun Regular.ttf', 25)
 
+        self.jump_sound = load_wav(gobj.RES_DIR + 'sound/%s jump.wav'%self.char)
+        self.jump_sound.set_volume(30)
+        self.slide_sound = load_wav(gobj.RES_DIR + 'sound/%s slide.wav'%self.char)
+        self.slide_sound.set_volume(30)
+        self.jelly_sound = load_wav(gobj.RES_DIR + 'sound/jelly.wav')
+        self.jelly_sound.set_volume(30)
+        self.item_sound = load_wav(gobj.RES_DIR + 'sound/item.wav')
+        self.item_sound.set_volume(30)
+
     @staticmethod
     def load_all_images():
         Player.load_images('cocoa')
@@ -126,15 +135,18 @@ class Player:
         if self.action != 'run': return
         self.action = 'slide'
         self.time = 0.0
+        self.slide_sound.play()
 
     def jump(self):
         if self.action in ['falling','doublejump', 'slide']:
             return
         if self.action == 'run':
             self.action ='jump'
+            self.jump_sound.play()
         elif self.action == 'jump':
             self.action = 'doublejump'
             self.cnt['doublejump'] = self.fidx
+            self.jump_sound.play()
         self.jump_speed = Player.JUMP #* self.mag
 
     def change(self,img_len):
@@ -163,17 +175,23 @@ class Player:
         if item.type == 'jelly':
             self.score.score += 150
             self.score.display += 150
+            self.jelly_sound.play()
         elif item.type == 'biggest':
             self.cnt['biggest'] = self.fidx
             if self.mag == 1 and self.mag_speed == 0:
                 self.magnify()
             self.SUPER = True
             self.cnt['super'] = self.fidx
+            self.item_sound.play()
         elif item.type == 'magnet':
             self.cnt['magnet'] = self.fidx
             self.MAGNET = True
+            self.item_sound.play()
         elif item.type == 'bigheart':
             self.life.life += 50
+            self.item_sound.play()
+        elif item.type == 'boss' or item.type == 'start':
+            self.item_sound.play()
 
     def handle_event(self, e):
         if e.type == SDL_KEYDOWN:

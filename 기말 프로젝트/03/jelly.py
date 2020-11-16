@@ -106,7 +106,6 @@ class Jelly:
         self.x,self.y = x,y
 
     def move_to_player(self):
-
         if self.x + self.w < get_canvas_width():
             self.set_target(self.player.pos)
             self.update_position()

@@ -7,10 +7,7 @@ gfw.run(main_state)
 # 점프해서 플랫폼 착지할때 l,r 전부 플랫폼 안에 들어있어야만 착지하는것 수정
 # jelly json으로 정리 가능한지 확인 후 수정
 # title_state, ready_state ui 제작
-# 사운드 넣어야함 -> title, ready, main 배경음악
-#              -> 쿠키 점프,슬라이드 사운드
-#              -> 충돌 사운드
-#              -> 젤리 획득 사운드
+# 사운드 넣어야함 -> boss sound
 #              -> ui 클릭 사운드
 
 # Boss(another) -> 화면앞에서 알짱거림

@@ -25,7 +25,7 @@ def build_world():
     center = get_canvas_width() // 2, get_canvas_height() // 2
 
     for n, speed in [(1,10), (2,100), (3,150)]:
-        bg = HorzScrollBackground('map_bg/bg_%d.png' % n)
+        bg = HorzScrollBackground('map_bg/bg_%d.png' % n,'../res/sound/main.mp3')
         bg.speed = speed
         gfw.world.add(gfw.layer.bg, bg)
 
@@ -45,6 +45,12 @@ def build_world():
     gfw.world.add(gfw.layer.score, score)
 
     stage_gen.load(gobj.res('stage_boss.txt'))
+
+    global obs_sound,crash_sound
+    obs_sound = load_wav(gobj.RES_DIR + 'sound/obs.wav')
+    obs_sound.set_volume(50)
+    crash_sound = load_wav(gobj.RES_DIR + 'sound/crash.wav')
+    crash_sound.set_volume(30)
 
 paused = False
 
@@ -91,10 +97,12 @@ def check_obstacles():
                     enemy.crash = True
                     score.display += 100
                     score.score +=100
+                    crash_sound.play()
             else:
                 enemy.hit = True
                 life.life -= enemy.power
                 player.give_super()
+                obs_sound.play()
 
 def check_obsBoss():
     for boss in gfw.world.objects_at(gfw.layer.boss):
@@ -104,6 +112,7 @@ def check_obsBoss():
                 boss.hit = True
                 life.life -= boss.power
                 player.give_super()
+                obs_sound.play()
 
 def call_obj():
     for item in gfw.world.objects_at(gfw.layer.item):
