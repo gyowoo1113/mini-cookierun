@@ -190,8 +190,6 @@ class Player:
         elif item.type == 'bigheart':
             self.life.life += 50
             self.item_sound.play()
-        elif item.type == 'boss' or item.type == 'start':
-            self.item_sound.play()
 
     def handle_event(self, e):
         if e.type == SDL_KEYDOWN:

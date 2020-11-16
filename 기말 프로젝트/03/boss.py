@@ -32,6 +32,15 @@ class Boss:
         self.dam = 0
         self.wake = False
 
+        self.step_sound = load_wav(gobj.RES_DIR + 'sound/boss_step.wav')
+        self.step_sound.set_volume(30)
+        self.dead_sound = load_wav(gobj.RES_DIR + 'sound/boss_dead.wav')
+        self.dead_sound.set_volume(30)
+        self.hit_sound = load_wav(gobj.RES_DIR + 'sound/boss.wav')
+        self.hit_sound.set_volume(30)
+        self.sound = -1
+        self.sound_past = -1
+
     @staticmethod
     def load_all_images():
         Boss.load_images('boss')
@@ -71,6 +80,15 @@ class Boss:
 
         self.w, self.h = image.w/big, image.h/big
         self.change(len(images))
+        self.sound = self.fidx % len(images)
+
+        sound = self.sound-self.sound_past
+
+        if self.action =='run' and sound != 0:
+            if self.fidx % len(images) == 1:
+                self.step_sound.play()
+
+        self.sound_past = self.fidx % len(images)
 
         image.draw_to_origin(self.x,self.y,self.w, self.h)
 
@@ -85,6 +103,7 @@ class Boss:
         if self.dam == 5 and self.action != 'dead':
             self.action = 'dead'
             self.cnt = self.fidx
+            self.dead_sound.play()
         if self.action == 'dead':
             if Boss.FIDX == img_len:
                 gfw.world.remove(self)
@@ -100,6 +119,7 @@ class Boss:
         if self.action == 'end':
             if Boss.FIDX == img_len:
                 self.action = 'sleep'
+                self.dead_sound.play()
 
 
 
@@ -108,6 +128,7 @@ class Boss:
             self.action = 'damage'
             self.dam += 1
             self.cnt = self.fidx
+            self.hit_sound.play()
         elif item.type == 'start':
             self.cnt = self.fidx
             self.wake = True
