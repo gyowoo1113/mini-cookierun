@@ -9,7 +9,7 @@ def add(score):
     global scores
     cw = get_canvas_width()
     ch = get_canvas_height()
-    scores = Score(cw/2,ch/2)
+    scores = Score(cw/2.5,ch/2,(255,255,250),120)
     scores.score = score
     gfw.world.add(gfw.layer.score,scores)
 

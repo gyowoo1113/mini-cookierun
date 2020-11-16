@@ -41,7 +41,7 @@ def build_world():
     gfw.world.add(gfw.layer.life, life)
 
     global score
-    score = Score(canvas_width/2-30, canvas_height - 65)
+    score = Score(canvas_width/2-30, canvas_height - 65,(0,0,0),30)
     gfw.world.add(gfw.layer.score, score)
 
     stage_gen.load(gobj.res('stage_boss.txt'))
