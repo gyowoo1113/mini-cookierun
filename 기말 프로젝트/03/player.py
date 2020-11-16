@@ -170,6 +170,8 @@ class Player:
         elif item.type == 'magnet':
             self.cnt = self.fidx
             self.MAGNET = True
+        elif item.type == 'bigheart':
+            self.life.life += 50
 
     def handle_event(self, e):
         if e.type == SDL_KEYDOWN:

@@ -50,7 +50,7 @@ def create_column():
     #print('map_index:', map_index)
 
 def create_object(ch, x, y):
-    if ch in ['1','2','3','4','5']:
+    if ch in ['1','2','3','4','5','6']:
         obj = Jelly(ord(ch) - ord('1'), x, y)
         gfw.world.add(gfw.layer.item, obj)
         #print('creating Jelly', x, y)

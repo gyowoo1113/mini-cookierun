@@ -30,3 +30,5 @@ class Life():
         self.life_time += gfw.delta_time
         if self.life <= 0:
             self.life =0
+        if self.life > self.width:
+            self.life = self.width
