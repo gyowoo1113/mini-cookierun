@@ -18,7 +18,7 @@ canvas_width= 1120
 canvas_height = 630
 
 def build_world():
-    gfw.world.init(['bg','platform','enemy','boss','item','player','ui','score'])
+    gfw.world.init(['bg','platform','enemy','boss','item','player','ui','life','score'])
     Player.load_all_images()
     Jelly.load_all_images()
 
@@ -38,7 +38,7 @@ def build_world():
 
     global life
     life = Life()
-    gfw.world.add(gfw.layer.ui, life)
+    gfw.world.add(gfw.layer.life, life)
 
     global score
     score = Score(canvas_width/2-30, canvas_height - 65)
@@ -69,6 +69,8 @@ def update():
     stage_gen.update(dx)
 
     call_obj()
+    if player.end:
+        End()
 
 def check_items():
     for item in gfw.world.objects_at(gfw.layer.item):
@@ -98,7 +100,7 @@ def check_obsBoss():
     for boss in gfw.world.objects_at(gfw.layer.boss):
         if boss.hit: continue
         if gobj.collides_box(player, boss):
-            if not boss.action in ['sleep','end'] :
+            if boss.action in ['run'] :
                 boss.hit = True
                 life.life -= boss.power
                 player.give_super()
@@ -111,6 +113,10 @@ def call_obj():
     if gfw.world.count_at(gfw.layer.boss) > 0:
         boss = gfw.world.object(gfw.layer.boss, 0)
 
+    if gfw.world.count_at(gfw.layer.player) > 0:
+        player = gfw.world.object(gfw.layer.player,0)
+        player.check_ui()
+
 def draw():
     gfw.world.draw()
     #gobj.draw_collision_box()
@@ -121,15 +127,17 @@ def handle_event(e):
     elif (e.type, e.key) == (SDL_KEYDOWN, SDLK_ESCAPE):
         gfw.pop()
     elif (e.type, e.key) == (SDL_KEYDOWN, SDLK_RETURN):
-        gfw.push(result_state)
-        print(score.score)
-        result_state.add(score.score)
+        End()
     elif e.key == SDLK_p:
         global paused
         paused = not paused
 
     if player.handle_event(e):
         return
+
+def End():
+    gfw.push(result_state)
+    result_state.add(score.score)
 
 def exit():
     pass

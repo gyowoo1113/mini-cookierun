@@ -4,6 +4,7 @@
       "char": "X",
       "name": "straw 2",
       "files": [
+        "map_obj/obj05.png",
         "map_obj/obj05.png"
       ],
       "fps": 1,
@@ -56,6 +57,7 @@
       "char": "T",
       "name": "marsh",
       "files": [
+        "map_obj/obj07.png",
         "map_obj/obj07.png"
       ],
       "fps": 10,

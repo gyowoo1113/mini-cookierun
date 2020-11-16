@@ -28,3 +28,5 @@ class Life():
         self.time += gfw.delta_time
         self.life -= self.time - self.life_time
         self.life_time += gfw.delta_time
+        if self.life <= 0:
+            self.life =0

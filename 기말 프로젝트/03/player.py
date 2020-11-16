@@ -40,9 +40,10 @@ class Player:
         self.cnt = 0
         self.sp_cnt = 0
 
-        self.score = 0
+        self.score = None
+        self.life = None
+        self.end = False
         self.size = self.SIZE[self.char]
-        #self.check = -1
 
     @staticmethod
     def load_all_images():
@@ -150,12 +151,15 @@ class Player:
         if self.SUPER and self.mag == 1.0:
             if Player.sp_FIDX > 20.0:
                 self.SUPER = False
+        if self.action == 'dead':
+            if Player.FIDX == img_len:
+                self.end = True
+        elif self.life.life == 0:
+            self.action = 'dead'
+            self.cnt = self.fidx
 
     def check(self,item):
         if item.type == 'jelly':
-            if gfw.world.count_at(gfw.layer.score) > 0:
-                self.score = gfw.gfw.world.object(gfw.layer.score, 0)
-
             self.score.score += 150
             self.score.display += 150
         elif item.type == 'biggest':
@@ -229,4 +233,15 @@ class Player:
     def give_super(self):
         self.SUPER = True
         self.sp_cnt = self.fidx
+
+    def check_ui(self):
+        if self.score is None:
+            if gfw.world.count_at(gfw.layer.score) > 0:
+                self.score = gfw.gfw.world.object(gfw.layer.score, 0)
+
+        if self.life is None:
+            if gfw.world.count_at(gfw.layer.life) > 0:
+                self.life = gfw.gfw.world.object(gfw.layer.life, 0)
+
+
 
