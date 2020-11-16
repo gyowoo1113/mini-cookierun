@@ -15,9 +15,10 @@ factory = None
 lines = []
 
 def load(file):
-    global factory
+    global factory,File
     if factory is None:
         factory = Factory()
+    File = file
 
     global lines, current_x, create_at, map_index
     with open(file, 'r') as f:
@@ -35,6 +36,7 @@ def update(dx):
     current_x += dx
     while current_x < create_at:
         create_column()
+
 
 def create_column():
     global current_x, map_index
@@ -83,4 +85,7 @@ def create_object(ch, x, y):
 def get(x, y):
     col = x % UNIT_PER_LINE
     row = x // UNIT_PER_LINE * SCREEN_LINES + SCREEN_LINES - 1 - y
-    return lines[row][col]
+    if row > len(lines):
+        load(File)
+    else:
+        return lines[row][col]
