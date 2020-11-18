@@ -9,6 +9,8 @@ gfw.run(main_state)
 # title_state, ready_state ui 제작
 # 사운드 넣어야함 -> ui 클릭 사운드
 # 보스 존재할때 보스젤리 먹으면 점수증가 추가해야함
+# 로딩 state 추가해야함
+
 
 # Boss(another) -> 화면앞에서 알짱거림
 # -> 앞의 장애물을 공격해서 캐릭터를 향해 던짐

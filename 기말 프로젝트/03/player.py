@@ -13,12 +13,11 @@ class Player:
     JUMP = 1000
     images = {}
     FPS = 10
-    FIDX = {'super':0,'magnet':0,'biggest':0,'dead':0,'doublejump':0}
-    cnt = {'super':0,'magnet':0,'biggest':0,'dead':0,'doublejump':0}
+    FIDX = {'magnet':0,'biggest':0,'dead':0,'doublejump':0}
+    cnt = {'magnet':0,'biggest':0,'dead':0,'doublejump':0}
     SIZE = {'cocoa': 1.4,'yogurt': 1.7}
     BIG = 1
     MAGNET = False
-    SUPER = False
     def __init__(self):
         if len(Player.images) == 0:
             Player.load_all_images()
@@ -122,9 +121,6 @@ class Player:
         self.change(len(images))
 
         image.draw_to_origin(*self.pos,self.w, self.h)
-        if self.SUPER:
-            x,y = self.pos
-            self.font.draw(x+self.w/4, y+self.h, '무적!!')
 
     def magnify(self):
         self.mag_speed = 1.0
@@ -150,7 +146,7 @@ class Player:
         self.jump_speed = Player.JUMP #* self.mag
 
     def change(self,img_len):
-        for command in ('super','magnet','biggest','dead','doublejump'):
+        for command in ('magnet','biggest','dead','doublejump'):
             Player.FIDX[command] = self.fidx - self.cnt[command]
         if self.action == 'doublejump':
             if Player.FIDX['doublejump'] == img_len:
@@ -161,9 +157,6 @@ class Player:
         elif Player.FIDX['magnet'] > 10.0:
             if self.MAGNET == True:
                 self.MAGNET = False
-        if self.SUPER and self.mag == 1.0:
-            if Player.FIDX['super'] > 25.0:
-                self.SUPER = False
         if self.action == 'dead':
             if Player.FIDX['dead'] == img_len:
                 self.end = True
@@ -180,8 +173,6 @@ class Player:
             self.cnt['biggest'] = self.fidx
             if self.mag == 1 and self.mag_speed == 0:
                 self.magnify()
-            self.SUPER = True
-            self.cnt['super'] = self.fidx
             self.item_sound.play()
         elif item.type == 'magnet':
             self.cnt['magnet'] = self.fidx
@@ -245,14 +236,9 @@ class Player:
         elif self.mag > 1.2:
             self.mag = 1.0
             self.mag_speed = 0
-            self.SUPER = False
 
     def move(self, diff):
         self.pos = gobj.point_add(self.pos, diff)
-
-    def give_super(self):
-        self.SUPER = True
-        self.cnt['super'] = self.fidx
 
     def check_ui(self):
         if self.score is None:

@@ -92,8 +92,7 @@ def check_obstacles():
         if enemy.hit: continue
         if enemy.crash: continue
         if gobj.collides_box(player, enemy):
-            if player.SUPER:
-                if not player.mag == 1.0:
+            if player.mag != 1.0:
                     enemy.crash = True
                     score.display += 100
                     score.score +=100
@@ -101,7 +100,6 @@ def check_obstacles():
             else:
                 enemy.hit = True
                 life.life -= enemy.power
-                player.give_super()
                 obs_sound.play()
 
 def check_obsBoss():
@@ -111,7 +109,6 @@ def check_obsBoss():
             if boss.action in ['run'] :
                 boss.hit = True
                 life.life -= boss.power
-                player.give_super()
                 obs_sound.play()
 
 def call_obj():
