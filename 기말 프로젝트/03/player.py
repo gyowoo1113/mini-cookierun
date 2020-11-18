@@ -64,7 +64,7 @@ class Player:
 
         images = {}
         count = 0
-        file_fmt = '%s/cookie/%s/%s (%d).png'
+        file_fmt = '%scookie/%s/%s (%d).png'
         for action in Player.ACTIONS:
             action_images = []
             n = 0

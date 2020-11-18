@@ -10,7 +10,7 @@ canvas_height = 630
 
 def build_world():
     gfw.world.init(['bg',])
-    bg = Background('../res/map_bg/ready_bg.png','../res/sound/ready.mp3','mp3')
+    bg = Background('map_bg/ready_bg.png','../res/sound/ready.mp3','mp3')
     gfw.world.add(gfw.layer.bg, bg)
 
 def enter():

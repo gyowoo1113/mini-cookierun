@@ -45,7 +45,7 @@ class Jelly:
 
         images = {}
         count = 0
-        file_fmt = '%s/%s/%s (%d).png'
+        file_fmt = '%s%s/%s (%d).png'
         for type in Jelly.TYPES:
             type_images = []
             n = 0

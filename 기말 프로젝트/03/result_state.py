@@ -15,7 +15,7 @@ def add(score):
 
 def build_world():
     gfw.world.init(['bg','score'])
-    bg = Background('../res/map_bg/result_bg.png','../res/sound/result.wav','wav')
+    bg = Background('map_bg/result_bg.png','../res/sound/result.wav','wav')
     gfw.world.add(gfw.layer.bg, bg)
 
 def enter():
