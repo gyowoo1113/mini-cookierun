@@ -118,6 +118,7 @@ def call_obj():
     global boss
     if gfw.world.count_at(gfw.layer.boss) > 0:
         boss = gfw.world.object(gfw.layer.boss, 0)
+        boss.check_ui()
 
     if gfw.world.count_at(gfw.layer.player) > 0:
         player = gfw.world.object(gfw.layer.player,0)

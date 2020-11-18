@@ -31,6 +31,7 @@ class Boss:
         self.hit = False
         self.dam = 0
         self.wake = False
+        self.score = None
 
         self.step_sound = load_wav(gobj.RES_DIR + 'sound/boss_step.wav')
         self.step_sound.set_volume(30)
@@ -128,6 +129,7 @@ class Boss:
             self.action = 'damage'
             self.dam += 1
             self.cnt = self.fidx
+            self.score.score += 1000 * self.dam
             self.hit_sound.play()
         elif item.type == 'start':
             self.cnt = self.fidx
@@ -147,5 +149,10 @@ class Boss:
         if self.action in ['sleep','end']:
             if self.x + self.w < 0:
                 gfw.world.remove(self)
+
+    def check_ui(self):
+        if self.score is None:
+            if gfw.world.count_at(gfw.layer.score) > 0:
+                self.score = gfw.gfw.world.object(gfw.layer.score, 0)
 
 
