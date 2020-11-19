@@ -15,16 +15,11 @@ def build_world():
     index = 0
     press = False
 
-    global frame_interval
-    frame_interval = gfw.frame_interval
-    gfw.frame_interval = 0
-
     global font
     font = load_font(gobj.RES_DIR + 'font/CookieRun Regular.ttf', 20)
 
 def exit():
-    global frame_interval
-    gfw.frame_interval = frame_interval
+    pass
 
 def enter():
     build_world()

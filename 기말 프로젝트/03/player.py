@@ -11,6 +11,7 @@ class Player:
     ACTIONS = ['dead', 'doublejump', 'jump', 'slide','run','falling']
     GRAVITY = 2500
     JUMP = 1000
+    FALL = 100
     images = {}
     FPS = 10
     FIDX = {'magnet':0,'biggest':0,'dead':0,'doublejump':0}
@@ -207,7 +208,7 @@ class Player:
         x,y = self.pos
         for platform in gfw.world.objects_at(gfw.layer.platform):
             l,b,r,t = platform.get_bb()
-            if x < l or x > r: continue
+            if x < l-self.w or x > r: continue
             mid = (b + t) // 2
             if foot < mid: continue
             if selected is None:
@@ -222,9 +223,8 @@ class Player:
         return selected
 
     def move_down_platform(self):
-        x,y = self.pos
-        y -=  gfw.delta_time
-        self.pos = x,y
+        self.action ='falling'
+        self.move((0,self.FALL*gfw.delta_time))
 
     def update_mag(self):
         if self.mag_speed == 0: return

@@ -3,10 +3,6 @@ import main_state
 
 gfw.run(main_state)
 
-# 계속 달리고 있을때 플랫폼 없어도 안떨어지는 버그 수정
-# 점프해서 플랫폼 착지할때 l,r 전부 플랫폼 안에 들어있어야만 착지하는것 수정
-# jelly json으로 정리 가능한지 확인 후 수정
-
 # title_state, ready_state ui 제작
 # 사운드 넣어야함 -> ui 클릭 사운드
 

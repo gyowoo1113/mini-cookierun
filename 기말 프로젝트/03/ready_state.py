@@ -13,6 +13,10 @@ def build_world():
     bg = Background('map_bg/ready_bg.png','../res/sound/ready.mp3','mp3')
     gfw.world.add(gfw.layer.bg, bg)
 
+    global frame_interval
+    frame_interval = gfw.frame_interval
+    gfw.frame_interval = 0
+
 def enter():
     build_world()
 
@@ -31,7 +35,8 @@ def handle_event(e):
         gfw.push(main_state)
 
 def exit():
-    pass
+    global frame_interval
+    gfw.frame_interval = frame_interval
 
 def pause():
     pass
