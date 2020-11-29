@@ -5,6 +5,8 @@ gfw.run(main_state)
 
 # title_state, ready_state ui 제작
 # 사운드 넣어야함 -> ui 클릭 사운드
+# button text 정리
+# ready_state player 고르기(open)추가
 
 # Boss(another) -> 화면앞에서 알짱거림
 # -> 앞의 장애물을 공격해서 캐릭터를 향해 던짐

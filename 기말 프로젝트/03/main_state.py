@@ -17,6 +17,10 @@ import result_state
 canvas_width= 1120
 canvas_height = 630
 
+def add(n):
+    global name
+    name = n
+
 def build_world():
     gfw.world.init(['bg','platform','enemy','boss','item','player','ui','life','score'])
     Player.load_all_images()
@@ -28,10 +32,6 @@ def build_world():
         bg = HorzScrollBackground('map_bg/bg_%d.png' % n,'../res/sound/main.mp3')
         bg.speed = speed
         gfw.world.add(gfw.layer.bg, bg)
-
-    global player
-    player = Player()
-    gfw.world.add(gfw.layer.player, player)
 
     global font
     font = load_font(gobj.RES_DIR + 'font/CookieRun Regular.ttf', 30)
@@ -51,6 +51,10 @@ def build_world():
     obs_sound.set_volume(50)
     crash_sound = load_wav(gobj.RES_DIR + 'sound/crash.wav')
     crash_sound.set_volume(30)
+
+    global player
+    player = Player(name)
+    gfw.world.add(gfw.layer.player, player)
 
 paused = False
 

@@ -6,6 +6,18 @@ from jelly import Jelly
 
 PLAYER_SIZE = 270
 
+class ReadyPlayer:
+    def __init__(self,name,callback):
+        self.char = name
+        self.image = gfw.image.load(gobj.res('cookie/%s.png'%self.char))
+    def draw(self):
+        w = get_canvas_width()/2
+        h = get_canvas_height()/2-70
+        self.image.draw(w,h)
+    def handle_event(self,e):
+        pass
+
+
 class Player:
     SLIDE_DURATION = 1.0
     ACTIONS = ['dead', 'doublejump', 'jump', 'slide','run','falling']
@@ -19,14 +31,14 @@ class Player:
     SIZE = {'cocoa': 1.4,'yogurt': 1.7}
     BIG = 1
     MAGNET = False
-    def __init__(self):
+    def __init__(self,name):
         if len(Player.images) == 0:
             Player.load_all_images()
 
         self.pos = 250, get_canvas_height() // 2- 150
         self.fidx = 0
         self.time = 0
-        self.char = random.choice(['cocoa','yogurt'])
+        self.char = name
         self.images = Player.load_images(self.char)
         self.action = 'run'
         self.delta = 0, 0

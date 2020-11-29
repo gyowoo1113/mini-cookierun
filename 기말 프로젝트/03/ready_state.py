@@ -4,12 +4,13 @@ import gobj
 from background import Background
 import main_state
 from button import Button
+from player import ReadyPlayer
 
 #임시
 canvas_width= 1120
 canvas_height = 630
 def start(cookie):
-    # player char -> cookie
+    main_state.add(name)
     gfw.push(main_state)
 
 def build_world():
@@ -21,10 +22,15 @@ def build_world():
     frame_interval = gfw.frame_interval
     gfw.frame_interval = 0
 
+    global name
+    name = 'yogurt'#'cocoa'
+    stand = ReadyPlayer(name,lambda: open(""))
+    gfw.world.add(gfw.layer.ui, stand)
+
     font =  load_font(gobj.RES_DIR + 'font/CookieRun Regular.ttf',40)
 
     l,b,w,h = get_canvas_width()-220,10,200,90
-    btn = Button(l,b,w,h,font,"Start!!", lambda: start("enemy"))
+    btn = Button(l,b,w,h,font,"Start!!", lambda: start(name))
     gfw.world.add(gfw.layer.ui, btn)
 
 def enter():
