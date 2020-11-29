@@ -2,13 +2,35 @@ from pico2d import *
 import gfw
 
 MOVE_PPS = 300
+MAX_LIFE = 5
 
 def init():
-    global image,pos,delta_x,delta_y,radius
+    global image,heart_red,heart_white
     image = gfw.image.load('res/player.png')
+    heart_red = gfw.image.load('res/heart_red.png')
+    heart_white = gfw.image.load('res/heart_white.png')
+
+    global pos,delta_x,delta_y,radius
     pos = get_canvas_width() //2, get_canvas_height()//2
     delta_x,delta_y = 0,0
     radius = image.w // 2
+
+    global life
+    life = MAX_LIFE
+
+def increase_life():
+    global life
+    if life == MAX_LIFE:
+        return True
+
+    life += 1
+    return False
+
+def decrease_life():
+    global life
+    life -= 1
+    #print(life)
+    return life <= 0
 
 def update():
     global pos
@@ -22,6 +44,12 @@ def update():
 
 def draw():
     image.draw(*pos)
+    x,y = get_canvas_width()-30,get_canvas_height()-30
+    for i in range(MAX_LIFE):
+       # heart = i < life ? red : white
+        heart = heart_red if i<life else heart_white
+        heart.draw(x,y)
+        x-=heart.w
 
 def handle_event(e):
     global delta_x,delta_y

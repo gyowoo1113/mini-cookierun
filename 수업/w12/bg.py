@@ -1,11 +1,12 @@
 from pico2d import *
 import gfw
+import player
 
-def init(p):
-    global space,stars,player
+
+def init():
+    global space,stars
     space = gfw.image.load('res/outerspace.png')
     stars = gfw.image.load('res/stars.png')
-    player = p
 
 def draw():
     x,y = get_canvas_width()//2, get_canvas_height()//2
