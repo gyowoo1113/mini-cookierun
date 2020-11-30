@@ -4,6 +4,7 @@ from gobj import *
 
 LBTN_DOWN = (SDL_MOUSEBUTTONDOWN, SDL_BUTTON_LEFT)
 LBTN_UP   = (SDL_MOUSEBUTTONUP,   SDL_BUTTON_LEFT)
+NORMAL_BUTTON, COOKIE_BUTTON, X_BUTTON = range(3)
 
 class BtnBg:
     def __init__(self, image):
@@ -27,25 +28,26 @@ class BtnBg:
 
     btn_bg_cache = {}
     @staticmethod
-    def get(state):
-        key = 'ui/button/btn' + '_' + str(state)
+    def get(choose,state):
+        key = 'ui/button/btn' + '_' + str(choose) + str(state)
         if key in BtnBg.btn_bg_cache:
             return BtnBg.btn_bg_cache[key]
 
-        file = 'ui/button/btn' + '_' + state + '.png'
+        file = 'ui/button/btn' + '_'+ choose + state + '.png'
         btn_bg = BtnBg(res(file))
         BtnBg.btn_bg_cache[key] = btn_bg
         return btn_bg
 
 class Button:
-    def __init__(self, l, b, w, h, font, text, callback, btnClass=None):
+    def __init__(self,state,l, b, w, h, font, text, callback, btnClass=None):
         self.l, self.b, self.w, self.h = l, b, w, h
         self.callback = callback
         self.set_text(font, text)
         self.t_x = self.l + (self.w - self.t_w) / 2
         self.t_y = self.b + self.h // 2
         self.mouse_point = None
-        self.bg = BtnBg.get('normal')
+        self.state = state
+        self.bg = BtnBg.get(self.state,'normal')
 
     def set_text(self, font, text):
         self.text = text
@@ -65,16 +67,16 @@ class Button:
                 if pt_in_rect(mouse_xy(e), self.get_bb()):
                     self.mouse_point = mouse_xy(e)
                     self.backup = self.text
-                    self.bg = BtnBg.get('down')
+                    self.bg = BtnBg.get(self.state,'down')
                     return True
             if e.type == SDL_MOUSEMOTION:
                 mpos = mouse_xy(e)
                 in_rect = pt_in_rect(mpos, self.get_bb())
                 if in_rect:
-                    self.bg = BtnBg.get('down')
+                    self.bg = BtnBg.get(self.state,'down')
                     return True
                 else:
-                    self.bg = BtnBg.get('normal')
+                    self.bg = BtnBg.get(self.state,'normal')
                     return False
 
             return False
@@ -85,18 +87,16 @@ class Button:
             mpos = mouse_xy(e)
             if pt_in_rect(mpos, self.get_bb()):
                 self.callback()
-            self.bg = BtnBg.get('normal')
+            self.bg = BtnBg.get(self.state,'normal')
             return False
 
         if e.type == SDL_MOUSEMOTION:
             mpos = mouse_xy(e)
             in_rect = pt_in_rect(mpos, self.get_bb())
             if in_rect:
-                self.text = "In Rect"
-                self.bg = BtnBg.get('down')
+                self.bg = BtnBg.get(self.state,'down')
             else:
-                self.text = "Out Rect"
-                self.bg = BtnBg.get('down')
+                self.bg = BtnBg.get(self.state,'down')
 
         return True
 
@@ -120,3 +120,54 @@ def draw_centered_text(font, text, l, b, w, h):
     ty = b + h // 2
     font.draw(tx, ty, text)
 
+class ReadyPlayer:
+    def __init__(self,name,callback):
+        self.char = name
+        self.image = gfw.image.load(res('cookie/%s.png'%self.char))
+        self.mouse_point = None
+        self.callback = callback
+    def draw(self):
+        w = get_canvas_width()/2
+        h = get_canvas_height()/2-70
+        self.image.draw(w,h)
+    def handle_event(self,e):
+        pair = (e.type, e.button)
+        if self.mouse_point is None:
+            if pair == LBTN_DOWN:
+                if pt_in_rect(mouse_xy(e), self.get_bb()):
+                    self.mouse_point = mouse_xy(e)
+                    return True
+            if e.type == SDL_MOUSEMOTION:
+                mpos = mouse_xy(e)
+                in_rect = pt_in_rect(mpos, self.get_bb())
+                if in_rect:
+                    return True
+                else:
+                    return False
+
+            return False
+
+        if pair == LBTN_UP:
+            self.mouse_point = None
+            mpos = mouse_xy(e)
+            if pt_in_rect(mpos, self.get_bb()):
+                self.callback()
+            return False
+
+        if e.type == SDL_MOUSEMOTION:
+            mpos = mouse_xy(e)
+            in_rect = pt_in_rect(mpos, self.get_bb())
+
+        return True
+
+    def get_bb(self):
+        w = get_canvas_width()/2
+        h = get_canvas_height()/2-70
+
+        return w-self.image.w/2,h-self.image.h/2,w+self.image.w/2,h+self.image.h/2
+
+    def remove(self):
+        gfw.world.remove(self)
+
+    def update(self):
+        pass

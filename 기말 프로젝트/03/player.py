@@ -6,18 +6,6 @@ from jelly import Jelly
 
 PLAYER_SIZE = 270
 
-class ReadyPlayer:
-    def __init__(self,name,callback):
-        self.char = name
-        self.image = gfw.image.load(gobj.res('cookie/%s.png'%self.char))
-    def draw(self):
-        w = get_canvas_width()/2
-        h = get_canvas_height()/2-70
-        self.image.draw(w,h)
-    def handle_event(self,e):
-        pass
-
-
 class Player:
     SLIDE_DURATION = 1.0
     ACTIONS = ['dead', 'doublejump', 'jump', 'slide','run','falling']

@@ -26,7 +26,7 @@ def build_world():
     font =  load_font(gobj.RES_DIR + 'font/CookieRun Regular.ttf',40)
 
     l,b,w,h = get_canvas_width()/2.5,20,220,90
-    btn = Button(l,b,w,h,font,"ReStart?", lambda: restart())
+    btn = Button("",l,b,w,h,font,"ReStart?", lambda: restart())
     gfw.world.add(gfw.layer.ui, btn)
 
 def enter():
