@@ -26,7 +26,7 @@ def build_world():
     gfw.frame_interval = 0
 
     global name,stand
-    name = 'yogurt'#'cocoa'
+    name = 'cocoa'
     stand = ReadyPlayer(name,lambda: gfw.push(playerchoose_state))
     gfw.world.add(gfw.layer.stand, stand)
 

@@ -16,7 +16,7 @@ class Player:
     FPS = 10
     FIDX = {'magnet':0,'biggest':0,'dead':0,'doublejump':0}
     cnt = {'magnet':0,'biggest':0,'dead':0,'doublejump':0}
-    SIZE = {'cocoa': 1.4,'yogurt': 1.7}
+    SIZE = {'cocoa': 1.4,'yogurt': 1.7,'rogue': 1.6}
     BIG = 1
     MAGNET = False
     def __init__(self,name):
@@ -57,6 +57,7 @@ class Player:
     def load_all_images():
         Player.load_images('cocoa')
         Player.load_images('yogurt')
+        Player.load_images('rogue')
 
     @staticmethod
     def load_images(char):

@@ -42,6 +42,11 @@ def build_world():
     cookie = Pro(gobj.RES_DIR +'cookie/yogurt_pro.png',(l,b,w,h))
     gfw.world.add(gfw.layer.pro, cookie)
 
+    l,b,w,h = 70+wh*2+40,get_canvas_height()/2-200,wh,wh
+    btn = Button("char",l,b,w,h,font,"", lambda: change('rogue'))
+    gfw.world.add(gfw.layer.ui, btn)
+    cookie = Pro(gobj.RES_DIR +'cookie/rogue_pro.png',(l,b,w,h))
+    gfw.world.add(gfw.layer.pro, cookie)
 def enter():
     build_world()
 
