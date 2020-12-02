@@ -48,6 +48,8 @@ class Button:
         self.mouse_point = None
         self.state = state
         self.bg = BtnBg.get(self.state,'normal')
+        self.sound = load_wav(RES_DIR + 'sound/ui.wav')
+        self.sound.set_volume(30)
 
     def set_text(self, font, text):
         self.text = text
@@ -68,6 +70,7 @@ class Button:
                     self.mouse_point = mouse_xy(e)
                     self.backup = self.text
                     self.bg = BtnBg.get(self.state,'down')
+                    self.sound.play()
                     return True
             if e.type == SDL_MOUSEMOTION:
                 mpos = mouse_xy(e)
@@ -126,6 +129,8 @@ class ReadyPlayer:
         self.image = gfw.image.load(res('cookie/%s.png'%self.char))
         self.mouse_point = None
         self.callback = callback
+        self.sound = load_wav(RES_DIR + 'sound/ui.wav')
+        self.sound.set_volume(30)
     def draw(self):
         w = get_canvas_width()/2
         h = get_canvas_height()/2-70
@@ -136,6 +141,7 @@ class ReadyPlayer:
             if pair == LBTN_DOWN:
                 if pt_in_rect(mouse_xy(e), self.get_bb()):
                     self.mouse_point = mouse_xy(e)
+                    self.sound.play()
                     return True
             if e.type == SDL_MOUSEMOTION:
                 mpos = mouse_xy(e)
