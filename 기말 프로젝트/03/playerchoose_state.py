@@ -1,7 +1,7 @@
 import gfw
 from pico2d import *
 import gobj
-from background import Background
+from background import Background,Pro
 import ready_state
 from button import Button,ReadyPlayer
 
@@ -14,7 +14,7 @@ def change(player):
     ready_state.change_cookie(player)
 
 def build_world():
-    gfw.world.init(['bg','ui'])
+    gfw.world.init(['bg','ui','pro'])
     bg = Background('map_bg/choose_bg.png','../res/sound/ready.mp3','mp3')
     gfw.world.add(gfw.layer.bg, bg)
 
@@ -30,17 +30,17 @@ def build_world():
     font =  load_font(gobj.RES_DIR + 'font/CookieRun Regular.ttf',40)
 
     wh = get_canvas_width()/3 - 60
-    l,b,w,h = 70,get_canvas_height()/2-200,wh,400
+    l,b,w,h = 70,get_canvas_height()/2-200,wh,wh
     btn = Button("char",l,b,w,h,font,"", lambda: change('cocoa'))
     gfw.world.add(gfw.layer.ui, btn)
+    cookie = Pro(gobj.RES_DIR +'cookie/cocoa_pro.png',(l,b,w,h))
+    gfw.world.add(gfw.layer.pro, cookie)
 
-    l,b,w,h = 70+wh+20,get_canvas_height()/2-200,wh,400
+    l,b,w,h = 70+wh+20,get_canvas_height()/2-200,wh,wh
     btn = Button("char",l,b,w,h,font,"", lambda: change('yogurt'))
     gfw.world.add(gfw.layer.ui, btn)
-
-#    l,b,w,h = 70+wh*2+40,get_canvas_height()/2-200,wh,400
-#    btn = Button("char",l,b,w,h,font,"", lambda: change('yogurt'))
-#    gfw.world.add(gfw.layer.ui, btn)
+    cookie = Pro(gobj.RES_DIR +'cookie/yogurt_pro.png',(l,b,w,h))
+    gfw.world.add(gfw.layer.pro, cookie)
 
 def enter():
     build_world()

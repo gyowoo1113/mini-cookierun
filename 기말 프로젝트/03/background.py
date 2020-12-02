@@ -204,3 +204,11 @@ class HorzScrollBackground:
     #     canvas.restore();
     # }
 
+class Pro:
+    def __init__(self,imgName,pos):
+        self.image = gfw.image.load(res(imgName))
+        self.pos = pos
+    def draw(self):
+        self.image.draw_to_origin(*self.pos)
+    def update(self):
+        pass
