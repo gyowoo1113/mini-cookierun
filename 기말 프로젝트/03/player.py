@@ -16,13 +16,13 @@ class Player:
     FPS = 10
     FIDX = {'magnet':0,'biggest':0,'dead':0,'doublejump':0}
     cnt = {'magnet':0,'biggest':0,'dead':0,'doublejump':0}
-    SIZE = {'cocoa': 1.4,'yogurt': 1.7,'rogue': 1.6}
     BIG = 1
     MAGNET = False
     def __init__(self,name):
         if len(Player.images) == 0:
             Player.load_all_images()
 
+        self.dict_update(name)
         self.pos = 250, get_canvas_height() // 2- 150
         self.fidx = 0
         self.time = 0
@@ -41,7 +41,7 @@ class Player:
         self.score = None
         self.life = None
         self.end = False
-        self.size = self.SIZE[self.char]
+        #self.size = self.SIZE[self.char]
         self.font = load_font(gobj.RES_DIR + 'font/CookieRun Regular.ttf', 25)
 
         self.jump_sound = load_wav(gobj.RES_DIR + 'sound/%s jump.wav'%self.char)
@@ -52,6 +52,19 @@ class Player:
         self.jelly_sound.set_volume(30)
         self.item_sound = load_wav(gobj.RES_DIR + 'sound/item.wav')
         self.item_sound.set_volume(30)
+
+    def dict_update(self,name):
+        with open(gobj.res('cookie.json'), 'r') as f:
+            data = json.load(f)
+        self.__dict__.update(data)
+        self.map = {}
+        for obj in self.objs:
+            self.map[obj["char"]] = obj
+
+        obj = self.map[name]
+        self.size = obj["size"]
+        self.guage = obj["life"]
+        self.num = obj["score"]
 
     @staticmethod
     def load_all_images():
@@ -168,8 +181,8 @@ class Player:
 
     def check(self,item):
         if item.type == 'jelly':
-            self.score.score += 150
-            self.score.display += 150
+            self.score.score += self.num
+            self.score.display += self.num
             self.jelly_sound.play()
         elif item.type == 'biggest':
             self.cnt['biggest'] = self.fidx
@@ -249,6 +262,8 @@ class Player:
         if self.life is None:
             if gfw.world.count_at(gfw.layer.life) > 0:
                 self.life = gfw.gfw.world.object(gfw.layer.life, 0)
+                self.life.life = self.guage
+                self.life.back = self.guage
 
 
 

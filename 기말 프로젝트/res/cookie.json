@@ -1,0 +1,22 @@
+{
+  "objs":[
+  {
+    "char": "cocoa",
+    "size": 1.4,
+    "life": 300,
+    "score": 300
+  },
+    {
+    "char": "yogurt",
+    "size": 1.7,
+    "life": 450,
+    "score": 200
+    },
+    {
+    "char": "rogue",
+    "size": 1.6,
+    "life": 600,
+    "score": 100
+    }
+  ]
+}

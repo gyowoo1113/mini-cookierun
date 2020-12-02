@@ -13,14 +13,17 @@ class Life():
         self.life = self.width
         self.time = 0
         self.life_time = 0
+        self.back = self.width
 
     def draw(self):
-        self.bg.draw_to_origin(self.width/2, self.height, self.width, self.bg.h)
+        self.bg.draw_to_origin(self.width/2, self.height, self.back, self.bg.h)
         self.fg.clip_draw_to_origin(0, 0, int(self.life), self.fg.h,
                                     self.width/2, self.height,self.life, self.fg.h)
         self.icon.draw_to_origin(self.width/2-self.icon.w+10, self.height-8)
         self.effect.draw_to_origin(self.width/2+int(self.life)-12, self.height-11,
                                    self.effect.w,50)
+        print(self.back)
+        print(self.life)
 
     def enter(self):
         pass
@@ -30,5 +33,5 @@ class Life():
         self.life_time += gfw.delta_time
         if self.life <= 0:
             self.life =0
-        if self.life > self.width:
-            self.life = self.width
+        if self.life > self.back:
+            self.life = self.back
