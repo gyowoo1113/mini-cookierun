@@ -3,10 +3,6 @@ import main_state
 
 gfw.run(main_state)
 
-# title_state, ready_state ui 제작
-# 사운드 넣어야함 -> ui 클릭 사운드
-# choose -> cookie image 추가
-
 # Boss(another) -> 화면앞에서 알짱거림
 # -> 앞의 장애물을 공격해서 캐릭터를 향해 던짐
 # -> 장애물 만들어서 던짐
