@@ -212,3 +212,5 @@ class Pro:
         self.image.draw_to_origin(*self.pos)
     def update(self):
         pass
+    def handle_event(self,e):
+        pass

@@ -22,7 +22,13 @@ class Player:
         if len(Player.images) == 0:
             Player.load_all_images()
 
+        self.score = None
+        self.life = None
+        self.end = False
+
         self.dict_update(name)
+        self.check_ui()
+
         self.pos = 250, get_canvas_height() // 2- 150
         self.fidx = 0
         self.time = 0
@@ -38,9 +44,6 @@ class Player:
 
         self.w,self.h = 0,0
 
-        self.score = None
-        self.life = None
-        self.end = False
         #self.size = self.SIZE[self.char]
         self.font = load_font(gobj.RES_DIR + 'font/CookieRun Regular.ttf', 25)
 

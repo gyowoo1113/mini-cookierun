@@ -14,7 +14,7 @@ def add(score):
     global scores
     cw = get_canvas_width()
     ch = get_canvas_height()
-    scores = Score(cw/2.5,ch/2,(255,255,250),120)
+    scores = Score(cw/3,ch/2,(255,255,250),120)
     scores.score = score
     gfw.world.add(gfw.layer.score,scores)
 
@@ -27,6 +27,10 @@ def build_world():
 
     l,b,w,h = get_canvas_width()/2.5,20,220,90
     btn = Button("",l,b,w,h,font,"ReStart?", lambda: restart())
+    gfw.world.add(gfw.layer.ui, btn)
+
+    l,b,w,h = get_canvas_width()-100,get_canvas_height()-100,50,50
+    btn = Button("x",l,b,w,h,font,"", lambda: gfw.quit())
     gfw.world.add(gfw.layer.ui, btn)
 
 def enter():

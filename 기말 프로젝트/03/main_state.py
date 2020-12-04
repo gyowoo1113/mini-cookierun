@@ -3,12 +3,13 @@ import os.path
 from pico2d import *
 import gobj
 from player import Player
-from background import HorzScrollBackground
+from background import HorzScrollBackground,Pro
 from platform import Platform
 from jelly import Jelly
 from boss import Boss
 from life_gauge import Life
 from score import Score
+from button import Button
 import random
 import stage_gen
 import result_state
@@ -21,8 +22,17 @@ def add(n):
     global name
     name = n
 
+def pause_set():
+    global paused,open
+    paused = not paused
+    open = not open
+    if open:
+        init_menu()
+    else:
+        kontinue()
+
 def build_world():
-    gfw.world.init(['bg','platform','enemy','boss','item','player','ui','life','score'])
+    gfw.world.init(['bg','platform','enemy','boss','item','player','life','score','ui','menu'])
     Player.load_all_images()
     Jelly.load_all_images()
 
@@ -56,7 +66,37 @@ def build_world():
     player = Player(name)
     gfw.world.add(gfw.layer.player, player)
 
-paused = False
+    l,b,w,h = get_canvas_width()-100,get_canvas_height()-100,50,50
+    btn = Button("pause_",l,b,w,h,font,"", lambda: pause_set())
+    gfw.world.add(gfw.layer.ui, btn)
+
+    global paused,open
+    paused = False
+    open = False
+
+def init_menu():
+    l,b,w,h = get_canvas_width()//3+80,get_canvas_height()//4,240,200
+    menu_bg = Pro(gobj.RES_DIR +'map_bg/choose_bg.png',(l,b,w,h))
+    gfw.world.add(gfw.layer.menu, menu_bg)
+
+    l,b,w,h = get_canvas_width()//3+100,get_canvas_height()//4+10,200,50
+    btn = Button("",l,b,w,h,font,"Return", lambda: gfw.pop())
+    gfw.world.add(gfw.layer.menu, btn)
+
+    l,b,w,h = get_canvas_width()//3+100,get_canvas_height()//4+70,200,50
+    btn = Button("",l,b,w,h,font,"End", lambda: End())
+    gfw.world.add(gfw.layer.menu, btn)
+
+    l,b,w,h = get_canvas_width()//3+100,get_canvas_height()//4+130,200,50
+    btn = Button("",l,b,w,h,font,"Continue", lambda: kontinue())
+    gfw.world.add(gfw.layer.menu, btn)
+
+def kontinue():
+    global paused,open
+    paused = False
+    open = False
+    for menu in gfw.world.objects_at(gfw.layer.menu):
+        gfw.world.remove(menu)
 
 def enter():
     build_world()
@@ -145,6 +185,25 @@ def handle_event(e):
 
     if player.handle_event(e):
         return
+    if handle_mouse(e):
+        return
+
+capture = None
+def handle_mouse(e):
+    global capture
+    if capture is not None:
+        holding = capture.handle_event(e)
+        if not holding:
+            capture = None
+        return True
+
+    for ui in range(gfw.layer.ui, gfw.layer.menu + 1):
+        for obj in gfw.world.objects_at(ui):
+            if obj.handle_event(e):
+                capture = obj
+                return True
+
+    return False
 
 def End():
     gfw.push(result_state)
