@@ -179,9 +179,6 @@ def handle_event(e):
         gfw.pop()
     elif (e.type, e.key) == (SDL_KEYDOWN, SDLK_RETURN):
         End()
-    elif e.key == SDLK_p:
-        global paused
-        paused = not paused
 
     if player.handle_event(e):
         return
@@ -197,11 +194,18 @@ def handle_mouse(e):
             capture = None
         return True
 
-    for ui in range(gfw.layer.ui, gfw.layer.menu + 1):
-        for obj in gfw.world.objects_at(ui):
+    if open:
+        for ui in range(gfw.layer.ui, gfw.layer.menu + 1):
+            for obj in gfw.world.objects_at(ui):
+                if obj.handle_event(e):
+                    capture = obj
+                    return True
+    else:
+        for obj in gfw.world.objects_at(gfw.layer.ui):
             if obj.handle_event(e):
                 capture = obj
                 return True
+
 
     return False
 

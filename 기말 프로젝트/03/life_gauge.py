@@ -22,8 +22,6 @@ class Life():
         self.icon.draw_to_origin(self.width/2-self.icon.w+10, self.height-8)
         self.effect.draw_to_origin(self.width/2+int(self.life)-12, self.height-11,
                                    self.effect.w,50)
-        print(self.back)
-        print(self.life)
 
     def enter(self):
         pass

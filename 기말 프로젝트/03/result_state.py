@@ -46,7 +46,7 @@ def handle_event(e):
     if e.type == SDL_QUIT:
         gfw.quit()
     elif (e.type, e.key) == (SDL_KEYDOWN, SDLK_SPACE):
-        gfw.push(ready_state)
+        restart()
 
     # print('ms.he()', e.type, e)
     if handle_mouse(e):

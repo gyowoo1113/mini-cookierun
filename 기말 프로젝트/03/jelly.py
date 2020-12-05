@@ -59,7 +59,7 @@ class Jelly:
                 count += 1
             images[type] = type_images
         Jelly.images[char] = images
-        print('%d images loaded for %s' % (count, char))
+        #print('%d images loaded for %s' % (count, char))
         return images
 
     def update(self):

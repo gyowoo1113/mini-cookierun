@@ -57,10 +57,6 @@ def draw():
 def handle_event(e):
     if e.type == SDL_QUIT:
         gfw.quit()
-    elif (e.type, e.key) == (SDL_KEYDOWN, SDLK_ESCAPE):
-        gfw.pop()
-    elif (e.type, e.key) == (SDL_KEYDOWN, SDLK_SPACE):
-        gfw.push(main_state)
 
     # print('ms.he()', e.type, e)
     if handle_mouse(e):

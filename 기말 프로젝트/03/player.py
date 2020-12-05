@@ -96,7 +96,7 @@ class Player:
                 count += 1
             images[action] = action_images
         Player.images[char] = images
-        print('%d images loaded for %s' % (count, char))
+        #print('%d images loaded for %s' % (count, char))
         return images
 
     def update(self):
