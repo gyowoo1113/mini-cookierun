@@ -1,0 +1,91 @@
+{
+  "objs": [
+    {
+      "char": "X",
+      "name": "straw 2",
+      "files": [
+        "map_obj/obj05.png",
+        "map_obj/obj05.png"
+      ],
+      "fps": 1,
+      "offset": 120,
+      "loops": false,
+      "attr": {
+        "delay": 0,
+        "bb": [0,0,64,112],
+        "sz" : 1.3,
+        "power":30
+      }
+    },{
+      "char": "Y",
+      "name": "straw",
+      "files": [
+        "map_obj/straw_01.png",
+        "map_obj/straw_02.png",
+        "map_obj/straw_03.png",
+        "map_obj/straw_04.png",
+        "map_obj/straw_05.png"
+      ],
+      "fps": 5,
+      "offset": 50,
+      "loops": false,
+      "attr": {
+        "delay": 1,
+        "bb": [0,0,76,62],
+        "sz" : 1.2,
+       "power":40
+      }
+    },{
+      "char": "Z",
+      "name": "stick",
+      "files": [
+        "map_obj/stick_01.png",
+        "map_obj/stick_02.png",
+        "map_obj/stick_03.png",
+        "map_obj/stick_04.png"
+      ],
+      "fps": 10,
+      "offset": 100,
+      "loops": false,
+      "attr": {
+        "delay": 1,
+        "bb": [0,0,104,280],
+        "sz" : 1,
+      "power":50
+      }
+    },{
+      "char": "T",
+      "name": "marsh",
+      "files": [
+        "map_obj/obj07.png",
+        "map_obj/obj07.png"
+      ],
+      "fps": 10,
+      "offset": 205,
+      "loops": false,
+      "attr": {
+        "delay": 0,
+        "bb": [0,0,78,244],
+        "sz" : 1,
+      "power":40
+      }
+    },{
+      "char": "J",
+      "name": "jem",
+      "files": [
+        "map_obj/jem (1).png",
+        "map_obj/jem (2).png",
+        "map_obj/jem (3).png"
+      ],
+      "fps": 10,
+      "offset": 50,
+      "loops": true,
+      "attr": {
+        "delay": 1,
+        "bb": [0,0,124,108],
+        "sz" : 0.6,
+      "power":20
+      }
+    }
+  ]
+}

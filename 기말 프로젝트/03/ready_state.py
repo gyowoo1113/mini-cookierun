@@ -18,7 +18,7 @@ def start():
 
 def build_world():
     gfw.world.init(['bg','ui','stand'])
-    bg = Background('map_bg/ready_bg.png','../res/sound/ready.mp3','mp3')
+    bg = Background('map_bg/ready_bg.png','sound/ready.mp3','mp3')
     gfw.world.add(gfw.layer.bg, bg)
 
     global frame_interval

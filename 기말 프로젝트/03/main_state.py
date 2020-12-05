@@ -4,7 +4,7 @@ from pico2d import *
 import gobj
 from player import Player
 from background import HorzScrollBackground,Pro
-from platform import Platform
+from flatform import Platform
 from jelly import Jelly
 from boss import Boss
 from life_gauge import Life
@@ -39,7 +39,7 @@ def build_world():
     center = get_canvas_width() // 2, get_canvas_height() // 2
 
     for n, speed in [(1,10), (2,100), (3,150)]:
-        bg = HorzScrollBackground('map_bg/bg_%d.png' % n,'../res/sound/main.mp3')
+        bg = HorzScrollBackground('map_bg/bg_%d.png' % n,'sound/main.mp3')
         bg.speed = speed
         gfw.world.add(gfw.layer.bg, bg)
 
@@ -76,7 +76,7 @@ def build_world():
 
 def init_menu():
     l,b,w,h = get_canvas_width()//3+80,get_canvas_height()//4,240,200
-    menu_bg = Pro(gobj.RES_DIR +'map_bg/choose_bg.png',(l,b,w,h))
+    menu_bg = Pro('map_bg/choose_bg.png',(l,b,w,h))
     gfw.world.add(gfw.layer.menu, menu_bg)
 
     l,b,w,h = get_canvas_width()//3+100,get_canvas_height()//4+10,200,50

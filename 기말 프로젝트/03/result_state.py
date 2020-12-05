@@ -20,7 +20,7 @@ def add(score):
 
 def build_world():
     gfw.world.init(['bg','score','ui'])
-    bg = Background('map_bg/result_bg.png','../res/sound/result.wav','wav')
+    bg = Background('map_bg/result_bg.png','sound/result.wav','wav')
     gfw.world.add(gfw.layer.bg, bg)
 
     font =  load_font(gobj.RES_DIR + 'font/CookieRun Regular.ttf',40)
