@@ -26,6 +26,7 @@
                 * 이 경우, 맵에 젤리가 생성된다.
     * **방법**
         * 게임 시작 전, 원하는 쿠키를 선택한다.
+        * 쿠키마다 능력치가 다르다.
         * 게임시작 버튼을 누르면 게임이 시작된다.
         * 쿠키를 슬라이드, 점프로 조작할 수 있다.
         * *달리는 동안 젤리를 먹어 점수를 얻는다.*
@@ -221,7 +222,18 @@
    > ![screensh](../res/mk/2차_코드설명.png)  
    > ![screensh](../res/mk/2차_코드설명2.png)
 
+# 7. 3차발표 자료 
+   > ![screensh](../res/mk/mk001.png) 
+   > ![screensh](../res/mk/2차_추가구현.png) 
+   > ![screensh](../res/mk/mk0002.png) 
 
+# 8. 동영상 링크
+    * 1차 발표
+     https://youtu.be/dyqfxqS7Ak8
+    * 2차 발표
+     https://youtu.be/ODQiGTxKty8
+    * 3차 발표
+     https://youtu.be/dhcTunQJJXA
 
  
     
