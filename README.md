@@ -5,14 +5,11 @@
         
     "쿠키런:오븐브레이크"의 카피 게임
 
-#  개발 일정
-   > ![screensh](../res/mk/markdown_04.jpg)  
-
 # class 구조 및 코드내용
-   > ![screensh](../res/mk/2차_class.png)  
-   > ![screensh](../res/mk/2차_상호작용.png)  
-   > ![screensh](../res/mk/2차_코드설명.png)  
-   > ![screensh](../res/mk/2차_코드설명2.png)
+   > ![screensh](projects/res/mk/2차_class.png)  
+   > ![screensh](projects/res/mk/2차_상호작용.png)  
+   > ![screensh](projects/res/mk/2차_코드설명.png)  
+   > ![screensh](projects/res/mk/2차_코드설명2.png)
 
 # 8. 동영상 링크
     * 1차 발표 - 계획 설명
